@@ -1,0 +1,24 @@
+.page {
+  min-height: 100vh;            /* ocupa alto completo */
+  display: flex;
+  justify-content: flex-end;    /* empuja el contenido a la derecha */
+  align-items: flex-start;      /* arriba (podés usar center si querés centrar vertical) */
+  padding: 40px;                /* “margen” interno para que no toque bordes */
+  gap: 24px;                    /* por si sumás elementos al lado */
+}
+
+/* tamaño y ajuste de la Card */
+.card {
+  width: clamp(320px, 45vw, 520px); /* responsive: no menos de 320, no más de 520 */
+}
+
+/* Responsive: en pantallas chicas, centrar y ocupar ancho */
+@media (max-width: 768px) {
+  .page {
+    justify-content: center;
+    padding: 16px;
+  }
+  .card {
+    width: 100%;
+  }
+}

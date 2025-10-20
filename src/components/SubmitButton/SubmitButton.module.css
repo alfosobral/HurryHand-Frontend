@@ -1,0 +1,47 @@
+.button {
+  width: 100%;
+  margin-top: 18px;
+  padding: 12px 0;
+  border-radius: 10px;
+  border: none;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background .2s, opacity .2s, transform .02s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  /* Colores por variables (con fallbacks) */
+  background: var(--btn-bg, #42b3fd);
+  color: var(--btn-fg, #fff);
+}
+
+.button:active { transform: translateY(1px); }
+
+.button:focus-visible {
+  outline: 0;
+  box-shadow: 0 0 0 4px rgba(66,179,253,.25);
+}
+
+/* Estado deshabilitado */
+.button:disabled,
+.button[aria-busy="true"] {
+  background: var(--btn-bg-disabled, #cbd5e1);
+  color: var(--btn-fg-disabled, #64748b);
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+/* Spinner */
+.spinner {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  border-top-color: currentColor;
+  animation: spin .7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
