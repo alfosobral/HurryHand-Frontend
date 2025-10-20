@@ -14,8 +14,9 @@ import { useState } from "react";
 import { signUpValidators } from "../validators/user";
 import { passwordStrength } from "../utils/password";
 import { onlyDigitsMax, blockNonDigits, makeSanitizedChange, makeSanitizedPaste } from "../utils/inputs";
-import styles from "./SignUp.module.css";
+import styles from "./Form.module.css";
 import { digits, toE164 } from "../utils/helpers";
+import ChangeTheme from "../components/ChangeTheme/ChangeTheme";
 
 export default function SignUp () {
 
@@ -84,6 +85,7 @@ export default function SignUp () {
                     id="name"
                     label="Nombre"
                     value={values.name}
+                    placeHolder="Escribe tu nombre"
                     onChange={handleChange("name")}
                     onBlur={handleBlur("name")}
                     error={errors.name}
@@ -95,6 +97,7 @@ export default function SignUp () {
                     id="surname"
                     label="Apellido"
                     value={values.surname}
+                    placeHolder="Escribe tu apellido"
                     onChange={handleChange("surname")}
                     onBlur={handleBlur("surname")}
                     error={errors.surname}
@@ -122,6 +125,7 @@ export default function SignUp () {
                     id="document"
                     label="Documento"
                     value={values.document}                // queda siempre solo dígitos en el estado
+                    placeHolder="Escribe el número de documento"
                     onChange={digits8Change("document")}    // limpia tipeo/edición
                     onPaste={digitsPaste("document")}      // limpia pegado
                     onBlur={handleBlur("document")}
@@ -147,6 +151,7 @@ export default function SignUp () {
                     id="phoneNumber"
                     label="Teléfono"
                     value={values.phoneNumber}
+                    placeHolder="Escribe tu número de teléfono"
                     onChange={digits8Change("phoneNumber")}
                     onPaste={digitsPaste("phoneNumber")}
                     onBlur={handleBlur("phoneNumber")}
@@ -164,6 +169,7 @@ export default function SignUp () {
                     id="email"
                     label="Email"
                     value={values.email}
+                    placeHolder="Escribe tu email"
                     onChange={handleChange("email")}
                     onBlur={handleBlur("email")}
                     error={errors.email}
@@ -175,6 +181,7 @@ export default function SignUp () {
                     id="password"
                     label="Contraseña"
                     value={values.password}
+                    placeHolder="Escribe una contraseña"
                     onChange={handleChange("password")}
                     onBlur={handleBlur("password")}
                     error={errors.password}
@@ -191,6 +198,7 @@ export default function SignUp () {
                     id="confirm"
                     label="Confirmar contraseña"
                     value={values.confirm}
+                    placeHolder="Repite la contraseña"
                     onChange={handleChange("confirm")}
                     onBlur={handleBlur("confirm")}
                     error={errors.confirm}
@@ -226,6 +234,7 @@ export default function SignUp () {
                     Registrarme
                 </SubmitButton>
             </Card>
+            <ChangeTheme className={styles.themeFab} />
         </div>
     )
 }

@@ -1,5 +1,8 @@
-
 * { box-sizing: border-box; }
+html, body { 
+  transition: background-color .2s, color .2s;;
+  height: 100%; 
+}
 body {
   margin: 0;
   background: var(--bg);
@@ -12,36 +15,53 @@ code {
     monospace;
 }
 
-:root {
-  /* Colores */
-  --bg: #06112e;
-  --text: #eaf2ff;
-  --card-bg: hsla(0, 8%, 87%, 0.40);
+:root{
+  /* Texto */
+  --text: #0b1220;
+  --label: #0b1220;
+  --placeholder: #6b7280;
 
-  /* Spacing y medidas */
-  --card-padding: 35px;
-  --card-radius: 12px;
-  --card-blur: 5px;
+  /* Campos base */
+  --field-bg: #ffffffcc;                 /* fondo input */
+  --field-fg: #0b1220;                   /* texto input */
+  --field-border: #cbd5e1;               /* borde normal */
+  --field-border-focus: #42b3fd;         /* borde focus */
+  --field-border-error: #ef4444;         /* borde error */
+  --field-shadow-focus: rgba(66,179,253,.2); /* glow focus */
 
-  /* Sombras */
-  --shadow-lg: 0 10px 30px rgba(0,0,0,.2);
+  /* Paneles desplegables (Select/Date) */
+  --panel-bg: rgba(255,255,255,0.9);
+  --panel-border: rgba(0,0,0,.12);
+  --panel-shadow: 0 14px 40px rgba(0,0,0,.18);
 
-  --input-bg:#ffffff77;
-  --input-border:#cbd5e1;
-  --input-border-focus:#42b3fd;
-  --input-border-error:#ef4444;
+  /* Botón (si querés que también cambie) */
+  --btn-bg:#42b3fd; --btn-fg:#fff;
+  --btn-bg-disabled:#cbd5e1; --btn-fg-disabled:#64748b;
 
-  --btn-bg:#42b3fd;
-  --btn-fg:#fff;
-  --btn-bg-disabled:#cbd5e1;
-  --btn-fg-disabled:#64748b;
+  background-color: #f7f9fc;
+  color: var(--text);
 }
 
-[data-theme="dark"] {
-  --bg: #0b1228;
+[data-theme="dark"]{
   --text: #e7ecf8;
-  --card-bg: rgba(14, 24, 54, 0.5);
-  --shadow-lg: 0 10px 30px rgba(0,0,0,.35);
+  --label: #e7ecf8;
+  --placeholder: #a3a9b7;
+
+  --field-bg: rgba(255,255,255,0.08);
+  --field-fg: #e7ecf8;
+  --field-border: #334155;
+  --field-border-focus: #60a5fa;
+  --field-border-error: #f87171;
+  --field-shadow-focus: rgba(96,165,250,.25);
+
+  --panel-bg: rgba(17, 24, 39, 0.95);
+  --panel-border: rgba(255,255,255,0.12);
+  --panel-shadow: 0 14px 40px rgba(0,0,0,.45);
+
+  --btn-bg:#60a5fa; --btn-fg:#0b1220;
+  --btn-bg-disabled:#475569; --btn-fg-disabled:#cbd5e1;
+
+  background-color: #040507;
 }
 
 h1, h2, h3, h4, h5, h6, p, div, span, input, button, textarea, select, label {

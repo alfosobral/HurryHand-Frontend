@@ -1,5 +1,3 @@
-/* src/components/InputField/InputField.module.css */
-
 .container {
   width: 100%;
   margin-bottom: 14px;
@@ -8,32 +6,21 @@
 .label {
   display: block;
   font-size: 14px;
-  color: var(--text, #fff);
+  color: var(--label);
   margin-bottom: 6px;
 }
 
 .input {
+  color: var(--field-fg);
   width: 100%;
   box-sizing: border-box;
   padding: 10px 12px;
   border-radius: 12px;
-  border: 4px solid var(--input-border, #cbd5e1);
+  border: 4px solid var(--field-border);
   outline: none;
   font-size: 14px;
-  background: var(--input-bg, #ffffff77);
+  background: var(--field-bg);
   transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
-}
-
-/* Enfoque (sin JS) */
-.input:focus {
-  transform: scale(1.02);
-  box-shadow: 0 0 0 5px rgba(37, 99, 235, .15);
-  border-color: var(--input-border-focus, #42b3fd);
-}
-
-/* Error */
-.inputError {
-  border-color: var(--input-border-error, #ef4444);
 }
 
 .errorText {
@@ -41,3 +28,11 @@
   font-size: 13px;
   margin-top: 6px;
 }
+
+.wrap:focus-within .input {
+  transform: scale(1.02);
+  box-shadow: 0 0 0 5px var(--field-shadow-focus);
+  border-color: var(--field-border-focus);
+}
+.input::placeholder { color: var(--placeholder); }
+.inputError { border-color: var(--field-border-error); }

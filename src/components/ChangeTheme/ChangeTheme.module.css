@@ -1,0 +1,74 @@
+.wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* checkbox oculto pero accesible */
+.input {
+  position: absolute;
+  opacity: 0;
+  width: 1px; height: 1px;
+  overflow: hidden;
+}
+
+/* pista del switch */
+.track {
+  width: 48px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--switch-bg, #e5e7eb);
+  position: relative;
+  transition: background .2s ease;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.08);
+}
+
+/* perilla */
+.thumb {
+  position: absolute;
+  top: 3px; left: 3px;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--thumb-bg, #fff);
+  box-shadow: 0 2px 8px rgba(0,0,0,.25);
+  transition: transform .2s ease, background .2s ease;
+}
+
+/* estado ON (tema dark) */
+.input:checked + .track {
+  background: var(--switch-on, #111827);
+}
+.input:checked + .track .thumb {
+  transform: translateX(20px);
+}
+
+/* foco accesible */
+.input:focus-visible + .track {
+  outline: 0;
+  box-shadow:
+    inset 0 0 0 1px rgba(0,0,0,.08),
+    0 0 0 4px rgba(66,179,253,.25);
+}
+
+/* label de texto (opcional) */
+.label {
+  font-size: 14px;
+  color: var(--text, #0b1220);
+}
+
+/* iconitos */
+.icon {
+  position: absolute;
+  top: 50%; transform: translateY(-50%);
+  font-size: 12px; opacity: .9; pointer-events: none;
+}
+.sun { left: 8px; }
+.moon { right: 8px; }
+
+/* menos animación si el usuario lo pide */
+@media (prefers-reduced-motion: reduce) {
+  .thumb { transition: none; }
+  .track { transition: none; }
+}

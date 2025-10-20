@@ -7,6 +7,9 @@ import SubmitButton from "../components/SubmitButton/SubmitButton";
 import useForm from "../hooks/useForm";
 import { loginValidators } from "../validators/user";
 import { login as loginService } from "../services/authService";
+import styles from "./Form.module.css";
+import ChangeTheme from "../components/ChangeTheme/ChangeTheme";
+
 
 const initial = { email: "", password: "" };
 
@@ -42,50 +45,53 @@ export default function Login() {
   };
 
   return (
-    <Card as="form" onSubmit={handleSubmit} style={{ width: 420, margin: "40px auto" }}>
-      <h2>Iniciar sesión</h2>
+    <div className={styles.page}>
+      <Card as="form" onSubmit={handleSubmit} noValidate className={styles.card}>
+        <h2>Iniciar sesión</h2>
 
-      {formError && (
-        <p style={{ color: "#dc2626", fontSize: 13, marginTop: 6 }}>{formError}</p>
-      )}
+        {formError && (
+          <p style={{ color: "#dc2626", fontSize: 13, marginTop: 6 }}>{formError}</p>
+        )}
 
-      <InputField
-        id="email"
-        label="Email"
-        type="email"
-        value={values.email}
-        onChange={handleChange("email")}
-        onBlur={handleBlur("email")}
-        error={errors.email}
-        touched={touched.email}
-        disabled={isSubmitting}
-        autoComplete="email"
-      />
+        <InputField
+          id="email"
+          label="Email"
+          type="email"
+          value={values.email}
+          onChange={handleChange("email")}
+          onBlur={handleBlur("email")}
+          error={errors.email}
+          touched={touched.email}
+          disabled={isSubmitting}
+          autoComplete="email"
+        />
 
-      <PasswordField
-        id="password"
-        label="Contraseña"
-        value={values.password}
-        onChange={handleChange("password")}
-        onBlur={handleBlur("password")}
-        error={errors.password}
-        touched={touched.password}
-        disabled={isSubmitting}
-        autoComplete="current-password"
-      />
+        <PasswordField
+          id="password"
+          label="Contraseña"
+          value={values.password}
+          onChange={handleChange("password")}
+          onBlur={handleBlur("password")}
+          error={errors.password}
+          touched={touched.password}
+          disabled={isSubmitting}
+          autoComplete="current-password"
+        />
 
-      <div style={{ margin: "18px 0 8px 0", textAlign: "center" }}>
-        <span style={{ color: "#ffffffff", fontSize: 15 }}>¿No tienes cuenta? </span>
-        <a
-        href="#"
-        style={{ color: "#34aadcff", textDecoration: "underline", cursor: "pointer", fontWeight: 600 }}
-        onClick={e => { e.preventDefault(); navigate("/signup"); }}
-        >Registrarme</a>
-        </div>
+        <div style={{ margin: "18px 0 8px 0", textAlign: "center" }}>
+          <span style={{ color: "#ffffffff", fontSize: 15 }}>¿No tienes cuenta? </span>
+          <a
+          href="#"
+          style={{ color: "#34aadcff", textDecoration: "underline", cursor: "pointer", fontWeight: 600 }}
+          onClick={e => { e.preventDefault(); navigate("/signup"); }}
+          >Registrarme</a>
+          </div>
 
-      <SubmitButton disabled={!isValid} loading={isSubmitting}>
-        Entrar
-      </SubmitButton>
-    </Card>
+        <SubmitButton disabled={!isValid} loading={isSubmitting}>
+          Entrar
+        </SubmitButton>
+      </Card>
+      <ChangeTheme className={styles.themeFab} />
+    </ div>
   );
 }

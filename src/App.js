@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import ProtectedRoute from "./components/ProtectedRoute";
 import SignUp from "./pages/SignUp";
 
+
 export default function App() {
   return (
     <AuthProvider>
