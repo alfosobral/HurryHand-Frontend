@@ -1,8 +1,7 @@
 // src/pages/Home.js
 import React from "react";
 import Navbar from "../components/Navbar/Navbar";
-import s from "./Dashboard.module.css";
-import ChangeTheme from "../components/ChangeTheme/ChangeTheme";
+import styles from "./styles/Dashboard.module.css";
 
 function formatDuration(iso) {
   if (!iso) return "";
@@ -24,7 +23,7 @@ function formatPrice(price) {
 export default function Home() {
 
     return (
-        <div className={s.page}>
+        <div className={styles.page}>
             <Navbar />
         </div>
         

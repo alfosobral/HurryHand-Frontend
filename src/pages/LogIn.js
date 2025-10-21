@@ -7,17 +7,16 @@ import SubmitButton from "../components/SubmitButton/SubmitButton";
 import useForm from "../hooks/useForm";
 import { loginValidators } from "../validators/user";
 import { login } from "../services/authService";
-import styles from "./Form.module.css";
+import styles from "./styles/Form.module.css";
 import ChangeTheme from "../components/ChangeTheme/ChangeTheme";
-
-
-const initial = { email: "", password: "" };
+import { initialLogInForm } from "../utils/forms";
 
 export default function Login() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formError, setFormError] = useState("");
   const navigate = useNavigate();
-  
+
+  const initial = initialLogInForm;  
 
   const {
     values, errors, touched,

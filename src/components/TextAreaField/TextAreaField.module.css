@@ -1,0 +1,39 @@
+/* src/components/TextAreaField/TextAreaField.module.css */
+.container { margin-bottom: 14px; width: 100%; }
+
+.label {
+  font-size: 14px;
+  color: var(--label);
+  margin-bottom: 6px;
+  display: block;
+}
+
+.textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border-color: var(--field-border);
+  border-width: 4px;
+  outline: none;
+  font-size: 14px;
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+  transform: scale(1);
+  box-shadow: none;
+  background: var(--field-bg);
+  box-sizing: border-box;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.textarea.focused {
+  border-color: #42b3fd;
+  transform: scale(1.02);
+  box-shadow: 0 0 0 5px rgba(37,99,235,.15);
+}
+
+.textarea.error {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 5px rgba(239,68,68,.15);
+}
+
+.errorText { color: #dc2626; font-size: 13px; margin-top: 6px; }

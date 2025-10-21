@@ -1,0 +1,68 @@
+
+.navbar {
+  width: 100%;
+  height: var(--nav-h);
+  background: var(--nav-bg);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .2);
+  font-family: Montserrat, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  justify-content: space-between;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  padding: 0 40px;
+  color: white;
+  overflow: visible;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.backButton {
+    background-color: transparent;
+    border-color: transparent;
+    width: "10vh";
+    height: "45px";
+    display: "flex";
+    align-items: "center";
+    justify-content: "center";
+    cursor: "pointer";
+    color: var(--placeholder);
+    font-size: "16px";
+    transition: "all 0.3s ease";
+  };
+
+.logoWrap {
+    margin-left: "10px";
+    display: "flex";
+    align-items: "center";
+    height: "100%"; 
+    border-color: aqua;
+};
+
+.logo {
+  height: "40px";
+  vertical-align: "middle";
+  display: "block";
+  margin: "0 auto";
+  filter: "drop-shadow(2px 2px 4px rgba(223, 222, 222, 0.6)) drop-shadow(-1px -1px 2px rgba(215, 210, 210, 0.2))";
+  border-radius: "10px"
+}
+
+.profileHeader {
+    flex: 1;
+    display: "flex";
+    justify-content: "center";
+    align-items: "center";
+  };
+
+.profileTitle {
+    font-size: "22px";
+    font-weight: "700";
+    color: "#eaf2ff";
+    margin: 0;
+    text-align: "center";
+    letter-spacing: "0.5px";
+  };

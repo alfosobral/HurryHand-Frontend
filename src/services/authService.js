@@ -1,3 +1,5 @@
+import { setJwt } from "../utils/tokens";
+
 // src/services/authService.js
 import { api } from "./apiClient";
 
@@ -9,7 +11,7 @@ export async function signUp(payload) {
 export async function login({ email, password }) {
   const data = await api.post("/auth/login", { email, password });
   // guardar token si corresponde
-  if (data?.token) localStorage.setItem("token", data.token);
+  if (data?.token) setJwt(data.token);
   return data;
 }
 

@@ -1,0 +1,69 @@
+@media (max-width: 1024px) {
+  .page {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .sidebar {
+    position: static;
+    margin-bottom: 16px;
+  }
+  .container {
+    max-width: 100%;
+  }
+}
+
+.page {
+  min-height: 85vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 20px;
+}
+
+.container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.sectionTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--field-border);
+  padding-bottom: 8px;
+  text-align: center;
+}
+
+.gridRow { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.fullWidth { grid-column: 1 / -1; }
+
+.avatarBox { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.avatarImg {
+  width: 200px; height: 250px; object-fit: cover; border-radius: 16px;
+  border: 4px solid var(--field-border);
+  background: var(--card-bg);
+  box-shadow: var(--shadow-lg);
+}
+
+.credList { display: grid; gap: 16px; }
+.credItem {
+  display: grid; grid-template-columns: 80px 1fr; gap: 16px; padding: 16px;
+  border-radius: 12px; border: 1px solid var(--card-border, rgba(0,0,0,.08));
+  background: transparent;
+}
+
+.credThumb {
+  width: 80px; height: 80px; border-radius: 8px; overflow: hidden;
+  border: 1px solid var(--field-border);
+  display:flex; align-items:center; justify-content:center;
+}
+
+.credBadge {
+  display:inline-block; padding:2px 6px; border-radius:4px; font-size:11px; color:#fff;
+}
+.badgeVerified { background:#16a34a; }
+.badgePending  { background:#fbbf24; }

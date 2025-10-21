@@ -1,0 +1,14 @@
+
+.row {
+  font-size: 14px;
+  color: #ffffff;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.input { accent-color: #2ea3ff; }
+
+.text { line-height: 1.2; }
+
+.error { color: #dc2626; font-size: 13px; margin-left: 8px; }

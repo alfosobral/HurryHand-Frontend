@@ -4,7 +4,7 @@ import PasswordField from "../components/PasswordField/PasswordField";
 import SelectField from "../components/SelectField/SelectField"
 import PhoneField from "../components/PhoneField/PhoneField"
 import PasswordStrengthBar from "../components/PasswordStrengthBar/PasswordStrengthBar";
-import DateField from "../components/DateField/DateFIeld";
+import DateField from "../components/DateField/DateField";
 import SubmitButton from "../components/SubmitButton/SubmitButton";
 import { useNavigate } from "react-router-dom";
 import { signUp } from "../services/authService"
@@ -14,15 +14,16 @@ import { useState } from "react";
 import { signUpValidators } from "../validators/user";
 import { passwordStrength } from "../utils/password";
 import { onlyDigitsMax, blockNonDigits, makeSanitizedChange, makeSanitizedPaste } from "../utils/inputs";
-import styles from "./Form.module.css";
-import { digits, toE164 } from "../utils/helpers";
+import styles from "./styles/Form.module.css";
+import { toE164 } from "../utils/phone";
 import ChangeTheme from "../components/ChangeTheme/ChangeTheme";
+import { initialSignUpForm } from "../utils/forms";
 
 export default function SignUp () {
 
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const initial = { name: "", surname: "",documentType:"Cedula Uruguaya", document:"", birthDate: "", email: "", password: "", confirm: "", phoneNumber: "", countryCode: "", accept: false };
+    const initial = initialSignUpForm;
 
     const {
         values,

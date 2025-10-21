@@ -6,9 +6,10 @@ import { FaBars, FaTimes, FaUserCircle } from "react-icons/fa";
 import { useAuth } from "../../context/AuthContext"
 import styles from "./Navbar.module.css";
 import ChangeTheme from "../ChangeTheme/ChangeTheme";
+import { deleteJwt } from "../../utils/tokens";
 
 function getToken() {
-  return localStorage.getItem("token") || sessionStorage.getItem("token");
+  return localStorage.getItem("jwt") || sessionStorage.getItem("jwt");
 }
 
 export default function Navbar() {
@@ -68,8 +69,7 @@ export default function Navbar() {
 
   const handleLogout = () => {
     logout?.();
-    localStorage.removeItem("token");
-    sessionStorage.removeItem("token");
+    deleteJwt();
     setHasToken(false);
     window.location.href = "/login";
   };
@@ -97,7 +97,7 @@ export default function Navbar() {
         <a href="/" className={styles.sideLink} onClick={() => setMenuOpen(false)}>
           Categorías
         </a>
-        <a href="/service_post2" className={styles.sideLink} onClick={() => setMenuOpen(false)}>
+        <a href="/service-post" className={styles.sideLink} onClick={() => setMenuOpen(false)}>
           Servicios
         </a>
         <a href="/contacto" className={styles.sideLink} onClick={() => setMenuOpen(false)}>
