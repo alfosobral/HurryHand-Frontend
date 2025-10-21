@@ -1,7 +1,4 @@
-.container {
-  width: 100%;
-  margin-bottom: 14px;
-}
+.container { width: 100%; margin-bottom: 14px; }
 
 .label {
   display: block;
@@ -10,29 +7,40 @@
   margin-bottom: 6px;
 }
 
-.input {
-  color: var(--field-fg);
-  width: 100%;
-  box-sizing: border-box;
-  padding: 10px 12px;
+/* El borde/ fondo van en el WRAPPER */
+.inputWrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   border-radius: 12px;
   border: 4px solid var(--field-border);
-  outline: none;
-  font-size: 14px;
   background: var(--field-bg);
+  padding: 6px 8px;
   transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
 }
 
-.errorText {
-  color: #dc2626;
-  font-size: 13px;
-  margin-top: 6px;
+/* Foco por :focus-within O por data-focus="true" (si usás el hook) */
+.inputWrap:focus-within,
+.inputWrap[data-focus="true"] {
+  transform: scale(1.02);
+  border-color: var(--field-border-focus);
+  box-shadow: 0 0 0 5px var(--field-shadow-focus);
 }
 
-.wrap:focus-within .input {
-  transform: scale(1.02);
-  box-shadow: 0 0 0 5px var(--field-shadow-focus);
-  border-color: var(--field-border-focus);
-}
-.input::placeholder { color: var(--placeholder); }
+/* Error en el wrapper */
 .inputError { border-color: var(--field-border-error); }
+
+.input {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 14px;
+  color: var(--field-fg);
+  padding: 4px 6px;
+}
+
+.input::placeholder { color: var(--placeholder); }
+
+.errorText { color: #dc2626; font-size: 13px; margin-top: 6px; }

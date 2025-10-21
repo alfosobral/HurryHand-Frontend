@@ -1,0 +1,61 @@
+/* src/components/SearchBar.module.css */
+.form {
+  display: flex;
+  align-items: center;
+  background: var(--searchbar-bg);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  box-shadow: 0 10px 30px rgba(0,0,0,.2);
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  transition: transform .16s ease, box-shadow .16s ease, background-color .16s ease, backdrop-filter .16s ease;
+  transform-origin: center;
+  will-change: transform, box-shadow, backdrop-filter, background-color;
+  z-index: 0; /* base */
+}
+
+.input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 8px 12px;
+  font-size: 14px;
+  background: none;
+  color: var(--text);
+}
+
+.input::placeholder { 
+  color: var(--placeholder);
+  opacity: .9; }
+
+.button {
+  border: none;
+  outline: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  background: none;
+  color: var(--placeholder);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transform: translateZ(0);
+}
+
+.form:focus-within {
+  /* se “despega” */
+  transform: translateY(2px) scale(1.005);
+  /* sombra más grande y más difusa */
+  box-shadow:
+    0 6px 16px rgba(0,0,0,.18),
+    0 0 0 3px rgba(255,255,255,.05); /* aro más fino */
+
+  /* un pelín más opaca para destacarla */
+  background: var(--searchbar-bg);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  /* sube arriba de todo dentro de la navbar */
+  z-index: 1100;
+}

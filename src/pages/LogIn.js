@@ -6,7 +6,7 @@ import PasswordField from "../components/PasswordField/PasswordField";
 import SubmitButton from "../components/SubmitButton/SubmitButton";
 import useForm from "../hooks/useForm";
 import { loginValidators } from "../validators/user";
-import { login as loginService } from "../services/authService";
+import { login } from "../services/authService";
 import styles from "./Form.module.css";
 import ChangeTheme from "../components/ChangeTheme/ChangeTheme";
 
@@ -17,6 +17,7 @@ export default function Login() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formError, setFormError] = useState("");
   const navigate = useNavigate();
+  
 
   const {
     values, errors, touched,
@@ -32,9 +33,8 @@ export default function Login() {
 
     try {
       setIsSubmitting(true);
-      await loginService({ email: values.email.trim(), password: values.password });
-      // OK → redirigí donde corresponda
-      navigate("/"); // o "/"
+      await login({ email: values.email.trim(), password: values.password });
+      navigate("/"); 
     } catch (err) {
       // mostrás mensaje del backend si viene
       const beMsg = err?.payload?.message || err?.message || "No se pudo iniciar sesión";
@@ -79,7 +79,7 @@ export default function Login() {
         />
 
         <div style={{ margin: "18px 0 8px 0", textAlign: "center" }}>
-          <span style={{ color: "#ffffffff", fontSize: 15 }}>¿No tienes cuenta? </span>
+          <span className={styles.text}>¿No tienes cuenta? </span>
           <a
           href="#"
           style={{ color: "#34aadcff", textDecoration: "underline", cursor: "pointer", fontWeight: 600 }}

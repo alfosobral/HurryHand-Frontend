@@ -1,0 +1,131 @@
+/* src/components/Navbar.module.css */
+:root {
+  --nav-h: 12vh;
+  --easing: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration: 500ms;
+}
+
+.navbar {
+  width: 100%;
+  height: var(--nav-h);
+  background: var(--nav-bg);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .2);
+  font-family: Montserrat, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  justify-content: space-between;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  padding: 0 40px;
+  color: white;
+  overflow: visible;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.leftGroup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 100%;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.linkButton {
+  margin-right: 14px;
+  border-radius: 6px;
+  padding: 12px;
+  background: rgba(225, 220, 220, 0.4);
+  color: white;
+  text-decoration: none;
+  background-color: #42b3fd;
+}
+
+.panelBase {
+  position: fixed;
+  top: var(--nav-h);
+  height: calc(100vh - var(--nav-h));
+  width: 240px;
+  background: var(--nav-panel-bg);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  z-index: 1001;
+  transition: transform var(--duration) var(--easing);
+  will-change: transform;
+}
+
+.leftPos { left: 0; }
+.rightPos { right: 0; }
+
+.panelOpen { transform: translateX(0); }
+.panelClosed { transform: translateX(100%); }
+.leftPos.panelClosed { transform: translateX(-100%); }
+
+.sideLink {
+  color: #7f7d7dff;
+  text-decoration: none;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: background-color 160ms ease;
+  cursor: pointer;
+}
+
+.sideLinkBtn {
+  background: none;
+  border: none;
+  text-align: left;
+  color: #7f7d7dff;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: background-color 160ms ease;
+  cursor: pointer;
+}
+
+.menuButton {
+  background: none;
+  border: none;
+  color: var(--placeholder);
+  font-size: 24px;
+  cursor: pointer;
+  margin-left: 14px;
+}
+
+.profileWrap { position: relative; }
+
+.profileBtn {
+  padding: 12px;
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+}
+
+.profileImg {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profileIcon {
+  font-size: 36px;
+  color: var(--profile-icon);
+  display: block;
+  background: transparent;
+  box-shadow: none; /* quita la caja */
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,.25)); /* sombra que sigue la forma */
+
+}

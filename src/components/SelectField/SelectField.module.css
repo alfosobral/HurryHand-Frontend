@@ -22,7 +22,7 @@
 }
 .triggerDisabled { background: #ffffff55; cursor:not-allowed; }
 
-.value { color:#0b1220; }
+.value { color:var(--field-fg); }
 .caret { display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; color:#7f7d7dff; margin-left:auto; }
 
 .panel {

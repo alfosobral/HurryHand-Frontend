@@ -29,14 +29,35 @@ code {
   --field-border-error: #ef4444;         /* borde error */
   --field-shadow-focus: rgba(66,179,253,.2); /* glow focus */
 
+  --card-bg: hsla(0, 8%, 87%, 0.40);
+  --card-radius: 12px;
+  --card-padding: 35px;
+  --card-blur: 5px;
+  --shadow-lg: 0 10px 30px rgba(0,0,0,.15);
+  --shadow-lg-hover: 0 14px 40px rgba(0,0,0,.2);
+  --card-border: rgba(0,0,0,.08);
+
+  --strength-track: #e5e7eb;
+
   /* Paneles desplegables (Select/Date) */
   --panel-bg: rgba(255,255,255,0.9);
   --panel-border: rgba(0,0,0,.12);
   --panel-shadow: 0 14px 40px rgba(0,0,0,.18);
 
+  --search-bg: rgba(225,220,220,0.4);
+  --search-border: rgba(0,0,0,.08);
+  --search-shadow: 0 10px 30px rgba(0,0,0,.2);
+
   /* Botón (si querés que también cambie) */
   --btn-bg:#42b3fd; --btn-fg:#fff;
   --btn-bg-disabled:#cbd5e1; --btn-fg-disabled:#64748b;
+
+  --nav-bg: rgba(225, 220, 220, 0.4);
+  --nav-panel-bg: rgba(199, 216, 219, 0.72);
+
+  --searchbar-bg: rgba(225, 220, 220, 0.4);
+
+  --profile-icon: rgb(241, 241, 241);
 
   background-color: #f7f9fc;
   color: var(--text);
@@ -54,16 +75,35 @@ code {
   --field-border-error: #f87171;
   --field-shadow-focus: rgba(96,165,250,.25);
 
+  --card-bg: rgba(14, 24, 54, 0.5);
+  --shadow-lg: 0 10px 30px rgba(0,0,0,.35);
+  --shadow-lg-hover: 0 16px 46px rgba(0,0,0,.45);
+  --card-border: rgba(255,255,255,.12);
+
+  --strength-track: #142343;
+
   --panel-bg: rgba(17, 24, 39, 0.95);
   --panel-border: rgba(255,255,255,0.12);
   --panel-shadow: 0 14px 40px rgba(0,0,0,.45);
 
+  --search-bg: rgba(255,255,255,0.08);
+  --search-border: rgba(255,255,255,.12);
+  --search-shadow: 0 10px 30px rgba(0,0,0,.45);
+
   --btn-bg:#60a5fa; --btn-fg:#0b1220;
   --btn-bg-disabled:#475569; --btn-fg-disabled:#cbd5e1;
 
-  background-color: #040507;
+  --nav-bg: rgba(6, 11, 19, 0.95);
+  --nav-panel-bg: rgba(16, 26, 46, 0.95);
+
+  --searchbar-bg: #142343;
+
+  --profile-icon: #142343;
+
+  background-color: #0d1425;
 }
 
 h1, h2, h3, h4, h5, h6, p, div, span, input, button, textarea, select, label {
   font-family: 'Montserrat', sans-serif;
 }
+

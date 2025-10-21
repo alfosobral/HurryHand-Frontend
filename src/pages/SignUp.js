@@ -222,7 +222,7 @@ export default function SignUp () {
                 )}
 
                 <div style={{ margin: "18px 0 8px 0", textAlign: "center" }}>
-                    <span style={{ color: "#ffffffff", fontSize: 15 }}>¿Ya tienes cuenta? </span>
+                    <span className={styles.text}>¿Ya tienes cuenta? </span>
                     <a
                     href="#"
                     style={{ color: "#34aadcff", textDecoration: "underline", cursor: "pointer", fontWeight: 600 }}

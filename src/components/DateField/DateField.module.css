@@ -22,6 +22,7 @@
   outline: none; border: none; background: transparent;
   font-size: 14px; color: var(--field-fg);
   padding: 4px 6px;
+  color: var(--field-fg)
 }
 
 /* estado error */

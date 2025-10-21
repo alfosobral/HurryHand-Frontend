@@ -1,13 +1,12 @@
-const BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:8080";
+const BASE_URL =
+  (process.env.REACT_APP_API_URL || "http://localhost:8080").replace(/\/$/, "");
+
 const DEFAULT_TIMEOUT_MS = 15000;
 
-function withTimeout(ms, signal) {
+function withTimeout(ms, upstreamSignal) {
   const ctrl = new AbortController();
-  const id = setTimeout(
-    () => ctrl.abort(new DOMException("Timeout", "AbortError")),
-    ms
-  );
-  if (signal) signal.addEventListener("abort", () => ctrl.abort(signal.reason));
+  const id = setTimeout(() => ctrl.abort(new DOMException("Timeout","AbortError")), ms);
+  if (upstreamSignal) upstreamSignal.addEventListener("abort", () => ctrl.abort(upstreamSignal.reason));
   return { signal: ctrl.signal, clear: () => clearTimeout(id) };
 }
 
@@ -15,7 +14,6 @@ function getAuthToken() {
   return localStorage.getItem("token");
 }
 
-// Helpers para detectar payloads especiales
 const isFormData = (b) => typeof FormData !== "undefined" && b instanceof FormData;
 const isBlob = (b) => typeof Blob !== "undefined" && b instanceof Blob;
 const isArrayBuffer = (b) =>
@@ -29,72 +27,64 @@ export async function apiFetch(
     body,
     timeout = DEFAULT_TIMEOUT_MS,
     signal,
-    // IMPORTANTE: por defecto NO incluimos cookies; así se comporta como tu fetch “directo”
-    credentials = "same-origin", // "omit" | "same-origin" | "include"
+    credentials = "omit",        // ⬅️ igual que tu fetch “crudo”
+    mode = "cors",
+    auth = false,                // ⬅️ NO agregamos Authorization salvo que lo pidas
   } = {}
 ) {
-  const url = path.startsWith("http") ? path : `${BASE_URL}${path}`;
+  const url = path.startsWith("http")
+    ? path
+    : `${BASE_URL}${path.startsWith("/") ? "" : "/"}${path}`;
 
-  // Armado de headers (no forzar Content-Type si el body es FormData/Blob/etc.)
   const finalHeaders = new Headers({
-    Accept: "application/json",
+    // Tu fetch simple solo ponía Content-Type. Dejamos Accept opcional.
     ...headers,
   });
 
-  const token = getAuthToken();
-  if (token) finalHeaders.set("Authorization", `Bearer ${token}`);
-
-  const methodUpper = method.toUpperCase();
-
-  // No adjuntar body en GET/HEAD
-  let finalBody = undefined;
-  if (methodUpper !== "GET" && methodUpper !== "HEAD" && body != null) {
+  // Body JSON por defecto si pasás un objeto y no es FormData/Blob
+  let finalBody;
+  const upper = method.toUpperCase();
+  if (upper !== "GET" && upper !== "HEAD" && body != null) {
     const shouldJson =
-      !isFormData(body) && !isBlob(body) && !isArrayBuffer(body) && // no json para binarios
-      (finalHeaders.get("Content-Type")?.includes("application/json") ||
-        // si no especificaron content-type y es un objeto plano, asumimos JSON
-        !finalHeaders.has("Content-Type"));
+      !isFormData(body) && !isBlob(body) && !isArrayBuffer(body) &&
+      (!finalHeaders.has("Content-Type") || finalHeaders.get("Content-Type")?.includes("application/json"));
 
     if (shouldJson) {
       finalHeaders.set("Content-Type", "application/json");
       finalBody = typeof body === "string" ? body : JSON.stringify(body);
     } else {
-      // Dejar que el navegador ponga el boundary correcto si es FormData
       finalBody = body;
-      // Si es FormData y el dev puso Content-Type manualmente, lo quitamos
       if (isFormData(body) && finalHeaders.has("Content-Type")) {
-        finalHeaders.delete("Content-Type");
+        finalHeaders.delete("Content-Type"); // deja que el navegador ponga el boundary
       }
     }
+  }
+
+  // ⬅️ Authorization solo si lo pedís explícitamente
+  if (auth) {
+    const token = getAuthToken();
+    if (token) finalHeaders.set("Authorization", `Bearer ${token}`);
   }
 
   const { signal: timeoutSignal, clear } = withTimeout(timeout, signal);
 
   try {
-    const resp = await fetch(url, {
-      method: methodUpper,
+    const res = await fetch(url, {
+      method: upper,
       headers: finalHeaders,
       body: finalBody,
       signal: timeoutSignal,
-      credentials, // ← ahora configurable, default "same-origin" (como tu fetch que sí funcionó)
+      credentials,   // ⬅️ por defecto “omit”, como tu fetch que anda
+      mode,
     });
 
-    // 204 => sin contenido
-    if (resp.status === 204) return null;
+    const text = await res.text();
+    let data = null;
+    try { data = text ? JSON.parse(text) : null; } catch { data = text; }
 
-    const text = await resp.text();
-    let data;
-    try {
-      data = text ? JSON.parse(text) : null;
-    } catch {
-      data = text; // no era JSON
-    }
-
-    if (!resp.ok) {
-      const err = new Error(
-        (data && data.message) || `HTTP ${resp.status}`
-      );
-      err.status = resp.status;
+    if (!res.ok) {
+      const err = new Error((data && data.message) || `HTTP ${res.status}`);
+      err.status = res.status;
       err.payload = data;
       throw err;
     }
@@ -105,7 +95,6 @@ export async function apiFetch(
   }
 }
 
-// Azúcares por verbo
 export const api = {
   get: (p, opt) => apiFetch(p, { ...opt, method: "GET" }),
   post: (p, body, opt) => apiFetch(p, { ...opt, method: "POST", body }),

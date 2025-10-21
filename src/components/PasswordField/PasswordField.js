@@ -27,7 +27,7 @@ export default function PasswordField({
       {label && <label htmlFor={id} className={styles.label}>{label}</label>}
 
       <div className={styles.wrap}>
-        <input
+        <input 
           id={id}
           name={id}
           type={effectiveShow ? "text" : "password"}
@@ -38,7 +38,7 @@ export default function PasswordField({
           placeholder={placeholder}
           aria-invalid={Boolean(error && touched)}
           aria-describedby={touched && error ? `${id}-error` : undefined}
-          className={`${styles.input} ${error && touched ? styles.inputError : ""}`}
+          className={`${styles.inputWrap} ${error && touched ? styles.inputError : ""}`}
           {...rest}
         />
         <button
