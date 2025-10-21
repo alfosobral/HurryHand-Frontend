@@ -43,7 +43,7 @@
   transform: translateZ(0);
 }
 
-.form:focus-within {
+.form:hover {
   /* se “despega” */
   transform: translateY(2px) scale(1.005);
   /* sombra más grande y más difusa */

@@ -92,15 +92,45 @@
   font-size: 16px;
   transition: background-color 160ms ease;
   cursor: pointer;
+  
 }
 
 .menuButton {
-  background: none;
+  display: flex;
+  align-items: center;
+  background: var(--searchbar-bg);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  box-shadow: 0 10px 30px rgba(0,0,0,.2);
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  z-index: 0; /* base */
+  background: transparent;
   border: none;
   color: var(--placeholder);
   font-size: 24px;
   cursor: pointer;
   margin-left: 14px;
+  transition: transform .16s ease, box-shadow .16s ease, background-color .16s ease, backdrop-filter .16s ease;
+  transform-origin: center;
+  will-change: transform, box-shadow, backdrop-filter, background-color;
+}
+
+.menuButton:hover {
+   transform: translateY(2px) scale(1.005);
+  /* sombra más grande y más difusa */
+  box-shadow:
+    0 6px 16px rgba(0,0,0,.18),
+    0 0 0 3px rgba(255,255,255,.05); /* aro más fino */
+
+  /* un pelín más opaca para destacarla */
+  background: var(--searchbar-bg);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  /* sube arriba de todo dentro de la navbar */
+  z-index: 1100;
 }
 
 .profileWrap { position: relative; }
