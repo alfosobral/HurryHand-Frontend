@@ -439,7 +439,7 @@ export default function Profile() {
         {user?.provider && (
           <Card>
             <div className={styles.sectionTitle}>Servicio profesional</div>
-            <SubmitButton onClick={() => navigate("/service_post2")}>Agregar Servicios</SubmitButton>
+            <SubmitButton onClick={() => navigate("/service-post")}>Agregar Servicios</SubmitButton>
           </Card>
         )}
       </div>
