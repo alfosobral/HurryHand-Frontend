@@ -1,4 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import back1 from "../assets/Background1.png";
+import back2 from "../assets/Background2.png";
+import back3 from "../assets/Background3.png";
+import back4 from "../assets/Background4.png";
+import back5 from "../assets/Background5.png";
+import back6 from "../assets/Background6.png";
 import { useNavigate } from "react-router-dom";
 import Card from "../components/Card/Card";
 import InputField from "../components/InputField/InputField";
@@ -15,6 +21,8 @@ export default function Login() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formError, setFormError] = useState("");
   const navigate = useNavigate();
+  const backgrounds = [back1, back2, back3, back4, back5, back6];
+  const [idx, setIdx] = useState(0);
 
   const initial = initialLogInForm;  
 
@@ -43,8 +51,25 @@ export default function Login() {
     }
   };
 
+  useEffect(() => {
+    backgrounds.forEach(src => { const i = new Image(); i.src = src; });
+  }, [backgrounds]);
+
+  // { changed code } Slideshow cada 10s
+  useEffect(() => {
+    if (backgrounds.length <= 1) return;
+    const t = setInterval(() => setIdx(i => (i + 1) % backgrounds.length), 10000);
+    return () => clearInterval(t);
+  }, [backgrounds.length]);
+
   return (
     <div className={styles.page}>
+      <div className="bg-slideshow" aria-hidden="true">
+        {backgrounds.map((src, i) => (
+          <img key={i} src={src} alt="" className={`bg-slide ${i === idx ? "is-active" : ""}`} />
+        ))}
+        <div className="bg-vignette" />
+      </div>
       <Card as="form" onSubmit={handleSubmit} noValidate className={styles.card}>
         <h2>Iniciar sesión</h2>
 

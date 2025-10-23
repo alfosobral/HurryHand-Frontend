@@ -15,6 +15,60 @@ code {
     monospace;
 }
 
+.bg-slideshow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  overflow: hidden;
+  will-change: transform;
+}
+
+.bg-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
+  will-change: opacity, transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  animation-fill-mode: forwards;
+}
+
+.bg-slide.is-active {
+  opacity: 1;
+  animation: breathe 5s ease-in-out forwards;
+}
+
+@keyframes breathe {
+  0% {
+    transform: scale(1) translateZ(0);
+  }
+  50% {
+    transform: scale(1.05) translateZ(0);
+  }
+  100% {
+    transform: scale(1) translateZ(0);
+  }
+}
+
+.bg-vignette {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, transparent 30%, rgba(0, 0, 0, 0.5) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
 :root{
   /* Texto */
   --text: #0b1220;
@@ -29,7 +83,7 @@ code {
   --field-border-error: #ef4444;         /* borde error */
   --field-shadow-focus: rgba(66,179,253,.2); /* glow focus */
 
-  --card-bg: hsla(0, 8%, 87%, 0.40);
+  --card-bg: hsla(0, 9%, 87%, 0.8);
   --card-radius: 12px;
   --card-padding: 35px;
   --card-blur: 5px;
@@ -75,7 +129,7 @@ code {
   --field-border-error: #f87171;
   --field-shadow-focus: rgba(96,165,250,.25);
 
-  --card-bg: rgba(14, 24, 54, 0.5);
+  --card-bg: rgba(14, 24, 54, 0.749);
   --shadow-lg: 0 10px 30px rgba(0,0,0,.35);
   --shadow-lg-hover: 0 16px 46px rgba(0,0,0,.45);
   --card-border: rgba(255,255,255,.12);
