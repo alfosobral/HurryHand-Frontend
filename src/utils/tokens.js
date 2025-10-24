@@ -1,19 +1,21 @@
+
+const TOKEN_KEY = "token"
+
+
 export function getJwt() {
   return (
-    localStorage.getItem("jwt") ||
-    sessionStorage.getItem("jwt") ||
-    localStorage.getItem("authToken") ||
-    sessionStorage.getItem("authToken")
+    localStorage.getItem(TOKEN_KEY) ||
+    sessionStorage.getItem(TOKEN_KEY)
   );
 }
 
 export function setJwt(token) {
-    localStorage.setItem("jwt", token)
+    localStorage.setItem(TOKEN_KEY, token)
 }
 
 export function deleteJwt() {
-    localStorage.removeItem("jwt");
-    sessionStorage.removeItem("jwt");
+    localStorage.removeItem(TOKEN_KEY);
+    sessionStorage.removeItem(TOKEN_KEY);
 }
 
 export function getEmailFromJwt(token) {
