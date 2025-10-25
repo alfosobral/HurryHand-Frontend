@@ -1,0 +1,71 @@
+.rbc-event-label {
+  display: none !important;
+}
+
+.rbc-event-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  text-align: center;
+  padding: 0 2px;
+}
+
+/* Evitar scroll horizontal inesperado */
+.rbc-time-view,
+.rbc-time-header,
+.rbc-time-content {
+  overflow-x: hidden;
+}
+
+/* ---- Theming: modo claro/oscuro ---- */
+/* Bordes más suaves usando variables del tema */
+.rbc-calendar .rbc-header,
+.rbc-calendar .rbc-time-header,
+.rbc-calendar .rbc-time-content,
+.rbc-calendar .rbc-month-row,
+.rbc-calendar .rbc-day-bg,
+.rbc-calendar .rbc-time-gutter,
+.rbc-calendar .rbc-timeslot-group {
+  border-color: var(--field-border, rgba(0,0,0,.12)) !important;
+}
+
+/* Off-range (días del mes anterior / siguiente) */
+.rbc-off-range-bg { background: rgba(0,0,0,.04); }
+[data-theme="dark"] .rbc-off-range-bg { background: rgba(255,255,255,.06); }
+
+/* Hoy */
+.rbc-today { background: rgba(14,165,233,.10); }
+[data-theme="dark"] .rbc-today { background: rgba(255,255,255,.06); }
+
+/* Toolbar por defecto de RBC: estilos coherentes con el tema */
+.rbc-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.rbc-toolbar .rbc-btn-group {
+  background: var(--btn-bg, #1f2937);
+  border: 1px solid var(--btn-bg, #1f2937);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.rbc-toolbar .rbc-btn-group > button {
+  background: transparent !important;
+  color: var(--btn-fg, #fff) !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 6px 12px;
+}
+.rbc-toolbar .rbc-btn-group > button + button { border-left: 1px solid rgba(255,255,255,.25); }
+.rbc-toolbar .rbc-btn-group > button.rbc-active {
+  background: rgba(255,255,255,.25) !important;
+  color: #0b1220 !important; /* texto oscuro sobre activo claro */
+}
+[data-theme="dark"] .rbc-toolbar .rbc-btn-group > button.rbc-active {
+  background: rgba(255,255,255,.18) !important;
+  color: #0b1220 !important;
+}
+.rbc-toolbar button:focus, .rbc-toolbar button:active { outline: none; box-shadow: none; }
+.rbc-toolbar-label { color: var(--text); font-weight: 600; }
+
+/* Fondo acorde al tema */
+[data-theme="dark"] .rbc-time-view,
+[data-theme="dark"] .rbc-month-view,
+[data-theme="dark"] .rbc-agenda-view { background: transparent; }

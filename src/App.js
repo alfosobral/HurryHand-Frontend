@@ -7,6 +7,7 @@ import ProtectedRoute from "./components/ProtectedRoute"; // lo usamos sólo en 
 import Test from "./pages/Test"
 import ServicePost from "./pages/ServicePost"
 import Profile from "./pages/Profile"
+import Calendar from "./pages/Calendar"
 
 
 export default function App() {
@@ -32,6 +33,7 @@ export default function App() {
           <Route path="/test" element={<Test />} />
           <Route path="/service-post" element={<ServicePost />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/calendar" element={<Calendar />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

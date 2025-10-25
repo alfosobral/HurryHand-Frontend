@@ -98,7 +98,7 @@ export default function ServicePost() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (step !== 2) return; // sólo en el paso final
+    if (step !== 2) return;
     setSubmitted(true);
 
     if (Object.keys(errors).length > 0) {
@@ -114,9 +114,10 @@ export default function ServicePost() {
     setServerErrors({});
     try {
       const payload = toBackendPayload(form);
-      const photoUrls = await uploadPortfolioFiles(form.portfolio);
-      const full = { ...payload, photosURLs: photoUrls };
-      await createServicePostMultipart(full, []); // segundo arg: adjuntos extra si aplican
+        console.log("Payload enviado al backend:");
+        console.log(JSON.stringify(payload, null, 2));
+
+      await createServicePostMultipart(payload, form.portfolio);
       navigate("/home_page");
     } catch (err) {
       const data = err?.data || err?.payload;

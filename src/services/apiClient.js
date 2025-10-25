@@ -1,3 +1,5 @@
+import { getJwt } from "../utils/tokens";
+
 const BASE_URL =
   (process.env.REACT_APP_API_URL || "http://localhost:8080").replace(/\/$/, "");
 
@@ -11,7 +13,7 @@ function withTimeout(ms, upstreamSignal) {
 }
 
 function getAuthToken() {
-  return localStorage.getItem("token");
+  return getJwt();
 }
 
 const isFormData = (b) => typeof FormData !== "undefined" && b instanceof FormData;
