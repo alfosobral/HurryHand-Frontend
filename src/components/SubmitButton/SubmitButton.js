@@ -17,6 +17,8 @@ export default function SubmitButton({
   type = "submit",
   className = "",
   style,
+  onClick,
+  onChange,
   ...rest
 }) {
   const isDisabled = disabled || loading;
@@ -27,6 +29,8 @@ export default function SubmitButton({
       className={`${styles.button} ${className}`}
       style={style}
       disabled={isDisabled}
+      onClick={onClick}
+      onChange={onChange}
       aria-busy={loading ? "true" : "false"}
       {...rest}
     >

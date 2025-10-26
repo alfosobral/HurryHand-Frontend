@@ -2,10 +2,11 @@ import React from "react";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
 
-const ImageCarousel = ({ images = [], width = "500px", height = "400px" }) => {
+const ImageCarousel = ({ images = [], width = "500px", height = "400px", className = "", ...rest }) => {
     return (
         <section
             id="image-carousel"
+            className={className}
             aria-label="Galería de imágenes"
             style={{
                 width,
@@ -13,6 +14,7 @@ const ImageCarousel = ({ images = [], width = "500px", height = "400px" }) => {
                 overflow: "hidden",
                 borderRadius: "18px",
             }}
+            {...rest}
         >
             <Splide
                 options={{

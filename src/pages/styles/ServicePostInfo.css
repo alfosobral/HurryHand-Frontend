@@ -14,8 +14,9 @@
     backdrop-filter: blur(var(--card-blur, 5px));
     display: flex;
     flex-direction: row;
-    min-width: 900px;
+    min-width: 1100px;
     max-width: 1200px;
+    min-height: max-content;
     max-height: 80vh;
     gap: 30px;
     margin: 0 auto;
@@ -26,6 +27,26 @@
 .service-post-info-block-col1 {
     flex-grow: 1;
     flex-basis: 0;
+    align-items: flex-start;
+
+    .image-carrousel {
+        margin-bottom: 25px;
+    }
+
+    .service-post-info-overview1 {
+        margin-top: 0;
+        font-size: 28px;
+        font-weight: 400;
+        margin-bottom: 10px;
+
+    }
+    .service-post-info-overview2 {
+        margin-top: 0;
+        font-size: 18px;
+        font-weight: 300;
+        line-height: 1.5;
+    }
+
 
 
 }
@@ -34,17 +55,206 @@
     flex-grow: 1;
     flex-basis: 0;
 
+    .service-post-info-title {
+
+        margin-top: 0;
+        margin-bottom: 0;
+        font-size: 40px;
+        font-weight: 500;
+
+
+    }
+
+    .service-post-info-rating-div {
+
+        margin-top: 2px;
+        margin-bottom: 5px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+
+        .service-post-info-rating1 {
+            margin-top: 0;
+            font-size: 18px;
+            color: var(--text-secondary, #6c757d);
+        }
+
+        .service-post-info-rating2 {
+            margin-top: 0;
+            font-size: 18px;
+            font-weight: 500;
+        }
+    }
+
+    .service-post-info-price {
+
+        margin-top: 5px;
+        font-size: 32px;
+        font-weight: 300;
+        margin-bottom: 16px;
+
+
+    }
+
+    .service-post-info-duration-div {
+        margin-top: 0;
+        margin-bottom: 0;
+        display: flex;
+        flex-direction: row;
+        align-items: baseline;
+        gap: 8px;
+
+        .service-post-info-duration1 {
+            color: var(--text-secondary, #6c757d);
+            font-size: 18px;
+            margin-bottom: 16px;
+            margin-top: 0;
+
+
+        }
+        .service-post-info-duration2 {
+            font-weight: 600;
+            font-size: 20px;
+            margin-bottom: 16px;
+            margin-top: 0;
+
+
+        }
+        .service-post-info-duration3 {
+            font-size: 18px;
+            font-weight: 300;
+            margin-bottom: 16px;
+            margin-top: 0;
+
+        }
+    }
+
+    .service-post-info-date-div {
+
+        margin-top: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+
+        .service-post-info-date1 {
+            margin-top: 0;
+            color: var(--text-secondary, #6c757d);
+            font-size: 18px;
+            margin-bottom: 2px;
+
+        }
+        .service-post-info-date2 {
+            margin-top: 4px;
+            font-weight: 400;
+            font-size: 20px;
+
+        }
+
+
+
+
+    }
 }
 
 .service-post-info-block-col3 {
     flex-grow: 1;
     flex-basis: 0;
 
-    .custom-scroll {
+    .service-post-info-available-dates-title {
+        margin-top: 0;
+        font-size: 24px;
+        font-weight: 300;
+        margin-bottom: 15px;
 
-
-        overflow-y: auto;
     }
 
+    .custom-scroll {
+
+        max-height: 70vh;
+        overflow-y: auto;
+        margin-bottom: 5px;
+    }
+
+    .service-post-info-available-dates-button {
+
+        margin-top: 12px;
+        margin-bottom: 0;
+    }
+
+
+
 }
+
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.29);
+    backdrop-filter: blur(6px);
+    z-index: 9999;
+}
+
+.confirm-modal {
+    background: var(--card-bg, #fff);
+    border-radius: 12px;
+    padding: 22px;
+    width: 90%;
+    max-width: 520px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    text-align: center;
+    border: 1px solid rgba(0,0,0,0.08);
+}
+
+.confirm-modal h3 {
+    margin: 0 0 8px;
+    font-size: 20px;
+}
+
+.confirm-modal p {
+    margin: 0 0 18px;
+    color: var(--text-secondary, #6c757d);
+}
+
+.confirm-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.btn {
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-primary {
+    background: var(--btn-bg, #007bff);
+    color: var(--btn-fg, #fff);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--text, #0b1220);
+    border: 1px solid rgba(0,0,0,0.08);
+}
+
+.service-post-info-available-dates-button[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.select-warning {
+    color: var(--text-secondary, #d9534f);
+    font-size: 14px;
+    margin: 6px 0;
+    text-align: left;
+}
+
 

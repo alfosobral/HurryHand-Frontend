@@ -10,7 +10,7 @@ const Radio = ({ value = null, onChange, size="30px" }) => {
         if (onChange) onChange(newValue);
     };
 
-    const isReadOnly = value !== null; // si viene value → es fijo
+    const isReadOnly = value !== null;
 
     return (
         <StyledWrapper>
@@ -44,13 +44,19 @@ const Radio = ({ value = null, onChange, size="30px" }) => {
 };
 
 const StyledWrapper = styled.div`
+    .rating {
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
+        gap: 2px;
+    }
+
     .rating:not(:checked) > input {
         position: absolute;
         appearance: none;
     }
 
     .rating:not(:checked) > label {
-        float: right;
         cursor: pointer;
         font-size: 30px;
     }
@@ -69,7 +75,6 @@ const StyledWrapper = styled.div`
         fill: #ffa723;
     }
 
-    /* Desactivar interacción si está fijo */
     .rating input:disabled + label {
         cursor: default;
     }
