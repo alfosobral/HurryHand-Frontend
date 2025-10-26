@@ -8,6 +8,7 @@ import Test from "./pages/Test"
 import ServicePost from "./pages/ServicePost"
 import Profile from "./pages/Profile"
 import Calendar from "./pages/Calendar"
+import ServicePostInfo from "./pages/ServicePostInfo";
 
 
 export default function App() {
@@ -21,6 +22,7 @@ export default function App() {
           {/* públicas también */}
           <Route path="/login" element={<LogIn />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/service-post/:id" element={<ServicePostInfo />} />
 
           {/* privadas: agrupadas bajo un guard con Outlet */}
           <Route element={<ProtectedRoute />}>

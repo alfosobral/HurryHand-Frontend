@@ -1,0 +1,50 @@
+.service-post-info-page-body {
+    align-items: center;
+    gap: 20px;
+    padding: 90px 10px;
+}
+
+.service-post-info-block {
+
+    background: var(--card-bg, hsla(0, 8%, 87%, 0.40));
+    border: 1px solid var(--card-border, rgba(0,0,0,.08));
+    box-shadow: var(--shadow-lg, 0 10px 30px rgba(0,0,0,.15));
+    border-radius: var(--card-radius, 12px);
+    padding: var(--card-padding, 35px);
+    backdrop-filter: blur(var(--card-blur, 5px));
+    display: flex;
+    flex-direction: row;
+    min-width: 900px;
+    max-width: 1200px;
+    max-height: 80vh;
+    gap: 30px;
+    margin: 0 auto;
+
+
+}
+
+.service-post-info-block-col1 {
+    flex-grow: 1;
+    flex-basis: 0;
+
+
+}
+
+.service-post-info-block-col2 {
+    flex-grow: 1;
+    flex-basis: 0;
+
+}
+
+.service-post-info-block-col3 {
+    flex-grow: 1;
+    flex-basis: 0;
+
+    .custom-scroll {
+
+
+        overflow-y: auto;
+    }
+
+}
+

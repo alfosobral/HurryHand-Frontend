@@ -1,0 +1,35 @@
+.selectable-list {
+    border: 1px solid var(--panel-border, #ccc);
+    border-radius: 8px;
+    padding: 6px;
+    width: 100%;
+    background: var(--panel-bg, white);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--field-border, #ccc) transparent;
+}
+
+.list-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background-color 0.15s ease, color 0.15s ease;
+    color: var(--field-fg, var(--text, #0b1220));
+    background: transparent;
+    outline: none;
+}
+
+.list-item:hover {
+    background-color: var(--search-bg, #f1f1f1);
+}
+
+.list-item:focus {
+    box-shadow: 0 0 0 4px var(--field-shadow-focus, rgba(66,179,253,.2));
+    background-color: rgba(0,0,0,0.04);
+}
+
+.list-item.selected {
+    background-color: var(--btn-bg, #007bff);
+    color: var(--btn-fg, #fff);
+    font-weight: 500;
+}
