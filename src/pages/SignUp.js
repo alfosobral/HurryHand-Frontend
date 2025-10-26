@@ -9,8 +9,14 @@ import SubmitButton from "../components/SubmitButton/SubmitButton";
 import { useNavigate } from "react-router-dom";
 import { signUp } from "../services/authService"
 import logo from "../assets/Logo.png";
+import back1 from "../assets/Background1.png"
+import back2 from "../assets/Background2.png"
+import back3 from "../assets/Background3.png"
+import back4 from "../assets/Background4.png"
+import back5 from "../assets/Background5.png"
+import back6 from "../assets/Background6.png"
 import useForm from "../hooks/useForm";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { signUpValidators } from "../validators/user";
 import { passwordStrength } from "../utils/password";
 import { onlyDigitsMax, blockNonDigits, makeSanitizedChange, makeSanitizedPaste } from "../utils/inputs";
@@ -22,7 +28,8 @@ import { initialSignUpForm } from "../utils/forms";
 export default function SignUp () {
 
     const [isSubmitting, setIsSubmitting] = useState(false);
-
+    const backgrounds = [back1, back2, back3, back4, back5, back6];
+    const [idx, setIdx] = useState(0);
     const initial = initialSignUpForm;
 
     const {
@@ -41,6 +48,16 @@ export default function SignUp () {
     const digits8Change = makeSanitizedChange(setValues, onlyDigitsMax(8));
     const digitsPaste  = makeSanitizedPaste(setValues, onlyDigits);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        backgrounds.forEach(src => { const i = new Image(); i.src = src; });
+    }, [backgrounds]);
+
+    useEffect(() => {
+        if (backgrounds.length <= 1) return;
+        const t = setInterval(() => setIdx(i => (i + 1) % backgrounds.length), 10000);
+        return () => clearInterval(t);
+    }, [backgrounds.length]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -77,6 +94,13 @@ export default function SignUp () {
 
     return (
         <div className={styles.page}>
+            <div className="bg-slideshow" aria-hidden="true">
+                {backgrounds.map((src, i) => (
+                    <img key={i} src={src} alt="" className={`bg-slide ${i === idx ? "is-active" : ""}`} />
+                ))}
+                <div className="bg-vignette" />
+            </div>
+
             <Card as="form" onSubmit={handleSubmit} noValidate className={styles.card}>
                 <img src={logo} alt="Error en la carga del logo" width={200} style={{ display: "block", margin: "0 auto"}} />
                 <h1>¡Bienvenido! Crea tu cuenta aquí</h1>
