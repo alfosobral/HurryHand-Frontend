@@ -6,11 +6,11 @@ export async function getLoggedUser() {
     const token = localStorage.getItem("token");
 
     if (!token) {
-        return null; // No hay sesión
+        return null;
     }
 
     try {
-        const res = await fetch("http://localhost:8080/api/auth/me", {
+        const res = await fetch("http://localhost:8080/auth/me", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

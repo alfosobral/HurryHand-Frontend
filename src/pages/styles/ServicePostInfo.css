@@ -59,7 +59,7 @@
 
         margin-top: 0;
         margin-bottom: 0;
-        font-size: 40px;
+        font-size: 35px;
         font-weight: 500;
 
 
@@ -255,6 +255,14 @@
     font-size: 14px;
     margin: 6px 0;
     text-align: left;
+}
+
+.no-dates-warning {
+
+    color: var(--text-secondary, #d9534f);
+    font-size: 16px;
+    margin: 12px 0;
+    text-align: center;
 }
 
 
