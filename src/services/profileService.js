@@ -1,6 +1,6 @@
 import { getJwt } from "../utils/tokens";
 
-const API ="http://localhost:8080"
+const API = process.env.REACT_APP_API_URL;
 
 // Helpers
 async function httpJson(path, { method = "GET", headers, body } = {}) {
