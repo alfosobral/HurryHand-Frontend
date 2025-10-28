@@ -23,6 +23,7 @@
   box-sizing: border-box;
   font-family: inherit;
   resize: vertical;
+  color: var(--text);
 }
 
 .textarea.focused {

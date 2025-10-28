@@ -142,9 +142,6 @@ export default function Navbar() {
               <button onClick={() => (window.location.href = "/profile")} className={styles.sideLinkBtn}>
                 Ir al perfil
               </button>
-              <button onClick={() => (window.location.href = "/credential")} className={styles.sideLinkBtn}>
-                Mis credenciales
-              </button>
               <button onClick={handleLogout} className={styles.sideLinkBtn}>
                 Cerrar sesión
               </button>
