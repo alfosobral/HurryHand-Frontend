@@ -1,7 +1,7 @@
 import { getJwt } from "../utils/tokens";
 
 const BASE_URL =
-  (process.env.REACT_APP_API_URL || "http://localhost:8080").replace(/\/$/, "");
+  (process.env.REACT_APP_API_URL);
 
 const DEFAULT_TIMEOUT_MS = 15000;
 

@@ -9,7 +9,7 @@ import ChangeTheme from "../ChangeTheme/ChangeTheme";
 import { deleteJwt } from "../../utils/tokens";
 
 function getToken() {
-  return localStorage.getItem("jwt") || sessionStorage.getItem("jwt");
+  return localStorage.getItem("token") || sessionStorage.getItem("token");
 }
 
 export default function Navbar() {
@@ -49,7 +49,7 @@ export default function Navbar() {
         const payload = JSON.parse(atob(token.split(".")[1] || ""));
         const email = payload?.sub || payload?.email;
         if (!email) return;
-        const API = import.meta.env.VITE_API_URL || "http://localhost:8080";
+        const API = import.meta.env.REACT_APP_API_URL;
         const res = await fetch(`${API}/api/user/email/${encodeURIComponent(email)}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
