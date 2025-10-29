@@ -17,6 +17,7 @@ import SubmitButton from "../components/SubmitButton/SubmitButton";
 import { createAppointment } from "../services/appointmentService";
 import style from "./styles/ServicePostInfo.css";
 import DateField from "../components/DateField/DateField";
+import { deleteServicePost } from "../services/servicePosts";
 
 export default function ServicePostInfo() {
     const { id } = useParams();
@@ -206,11 +207,6 @@ export default function ServicePostInfo() {
             await addAvailableDate(id, iso);
             setAddSuccess(true);
 
-            // O actualizar estado local sin recargar:
-            // setServicePost(prev => ({
-            //   ...prev,
-            //   availableDates: [...(prev?.availableDates ?? []), iso].sort((a,b)=> new Date(a)-new Date(b))
-            // }));
             setTimeout(() => window.location.reload(), 900);
         } catch (err) {
             console.error("Error agregando fecha:", err);
@@ -220,6 +216,38 @@ export default function ServicePostInfo() {
             setIsAdding(false);
         }
     }
+
+    const [showDeletePostConfirm, setShowDeletePostConfirm] = useState(false);
+    const [isDeletingPost, setIsDeletingPost] = useState(false);
+    const [deletePostError, setDeletePostError] = useState(null);
+
+    function handleDeletePostClick(e) {
+        if (e && e.preventDefault) e.preventDefault();
+        setShowDeletePostConfirm(true);
+    }
+
+    function handleCancelDeletePost() {
+        setShowDeletePostConfirm(false);
+    }
+
+    async function handleConfirmDeletePost() {
+        setIsDeletingPost(true);
+        setDeletePostError(null);
+        try {
+            await deleteServicePost(id);
+            setShowDeletePostConfirm(false);
+            window.location.href = "/"; // redirige al home o lista de servicios
+        } catch (err) {
+            console.error("Error eliminando service post:", err);
+            setDeletePostError(err?.message || "Error al eliminar el servicio");
+        } finally {
+            setIsDeletingPost(false);
+        }
+    }
+
+
+
+
 
     // Evita seleccionar fechas pasadas (cliente). Ajusta zona horaria local.
     const minLocalForInput = new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
@@ -313,6 +341,7 @@ export default function ServicePostInfo() {
                                                 className="service-post-info-available-delete-post-button"
                                                 disabled={!hasSession}
                                                 aria-disabled={!hasSession}
+                                                onClick={handleDeletePostClick}
                                             >
                                                 Borrar Service Post
                                             </SubmitButton>
@@ -474,6 +503,40 @@ export default function ServicePostInfo() {
                     </div>
                 </div>
             )}
+
+            {/* Modal confirmar borrado de Service Post */}
+            {showDeletePostConfirm && (
+                <div className="modal-overlay" role="dialog" aria-modal="true">
+                    <div className="confirm-modal">
+                        <h3>Confirmar borrado del servicio</h3>
+                        <p>¿Estás seguro de que querés eliminar este servicio permanentemente?</p>
+
+                        {deletePostError && (
+                            <p style={{ color: "var(--text-secondary, #d9534f)" }}>
+                                {deletePostError}
+                            </p>
+                        )}
+
+                        <div className="confirm-buttons">
+                            <button
+                                className="btn btn-secondary"
+                                onClick={handleCancelDeletePost}
+                                disabled={isDeletingPost}
+                            >
+                                {isDeletingPost ? "Cargando..." : "Cancelar"}
+                            </button>
+                            <button
+                                className="btn btn-primary"
+                                onClick={handleConfirmDeletePost}
+                                disabled={isDeletingPost}
+                            >
+                                {isDeletingPost ? "Eliminando..." : "Confirmar"}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
         </div>
     );
 }
