@@ -12,7 +12,9 @@ function getToken() {
   return localStorage.getItem("token") || sessionStorage.getItem("token");
 }
 
-export default function Navbar() {
+export default function Navbar({
+  searchbarOff = false
+}) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [profilePhoto, setProfilePhoto] = useState(null);
@@ -87,7 +89,9 @@ export default function Navbar() {
         </button>
       </div>
 
-      <SearchBar onSearch={(q) => console.log("Buscar:", q)} />
+      {!searchbarOff && (
+        <SearchBar onSearch={(q) => console.log("Buscar:", q)} />
+      )}
 
         
       <aside

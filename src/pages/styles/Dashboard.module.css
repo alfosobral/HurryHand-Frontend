@@ -1,4 +1,3 @@
-/* src/pages/Dashboard.module.css */
 .page {
   min-height: 100vh;
   display: flex;
@@ -10,6 +9,7 @@
   background-repeat: no-repeat;
   background-attachment: fixed;
 }
+
 
 .main {
   display: flex;
@@ -27,6 +27,8 @@
   max-width: 1200px;
   width: 100%;
   padding: 40px;
+  margin: 0 auto;
+  align-items: start;
 }
 
 .skeleton {
@@ -37,6 +39,6 @@
 
 .fullRowMsg {
   grid-column: 1 / -1;
-  color: white;
+  color: var(--text);
   text-align: center;
 }
