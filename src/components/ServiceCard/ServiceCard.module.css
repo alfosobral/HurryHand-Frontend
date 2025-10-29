@@ -1,0 +1,63 @@
+.cardRoot {
+  height: 40vh;
+  justify-content: end;
+  padding: 16px;
+  gap: 8px;
+  max-width: 300px;
+  cursor: pointer;
+  width: 100%;
+  min-width: 30vw;
+  box-sizing: border-box;
+  border-radius: 12px;
+  overflow: hidden;
+  will-change: transform, box-shadow, backdrop-filter, background-color;
+  transition: transform .16s ease, box-shadow .16s ease, background-color .16s ease, backdrop-filter .16s ease;
+}
+
+.cardRoot:hover {
+  transform: translateY(2px) scale(1.005);
+  box-shadow:
+    0 6px 16px rgba(0,0,0,.18),
+    0 0 0 3px rgba(255,255,255,.05); /* aro más fino */
+
+  background: var(--searchbar-bg);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  z-index: 1100;
+}
+
+.image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  margin: 0;
+  font-size: 16px;
+  color: var(--text);
+}
+
+.rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.description {
+  margin: 0;
+  color: var(--text);
+  line-height: 1.3;
+  font-size: 14px;
+}

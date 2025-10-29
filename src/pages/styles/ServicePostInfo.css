@@ -266,3 +266,12 @@
 }
 
 
+.service-post-info-available-delete-post-button {
+
+    background-color: var(--danger-bg, #dc3545);
+    color: var(--btn-fg, #fff);
+
+
+}
+
+
