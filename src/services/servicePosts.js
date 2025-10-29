@@ -1,4 +1,16 @@
-const API = "http://localhost:8080";
+const API = process.env.REACT_APP_API_URL;
+
+function toSearchParams(obj) {
+  const sp = new URLSearchParams();
+  Object.entries(obj).forEach(([k, v]) => {
+    if (v === undefined || v === null) return;
+    const s = String(v).trim();
+    if (s === "") return;
+    sp.set(k, s);
+  });
+  return sp.toString();
+}
+
 
 async function parseJsonResponse(res) {
   const text = await res.text();
@@ -16,28 +28,25 @@ async function parseJsonResponse(res) {
 export async function listServicePosts({
   page = 1,
   size = 12,
-  sortBy = "PRICE",
+  sortBy = "PRICE",      
   direction = "DESC",
   query = "",
+  signal, 
 } = {}) {
-  const payload = { page, size, sortBy, direction };
-  if (query && query.trim()) payload.query = query.trim();
-
-  try {
-    console.log("📡 listServicePosts payload:", payload);
-    const res = await fetch(`${API}/api/service-post/all`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify(payload),
-    });
-    const data = await parseJsonResponse(res);
-    console.log("📥 listServicePosts response:", data);
-    return data;
-  } catch (err) {
-    console.error("❗ listServicePosts error", err);
-    throw err;
-  }
+  const qs = toSearchParams({
+    page,
+    size,
+    sortBy,
+    direction,
+    query, 
+  });
+  const url = `${API}/api/service-post/all${qs ? `?${qs}` : ""}`;
+  const res = await fetch(url, {
+    method: "GET",
+    headers: { Accept: "application/json" },
+    signal,
+  });
+  return parseJsonResponse(res);
 }
 
 export async function createServicePost(payload) {
@@ -89,7 +98,6 @@ export async function uploadServicePostPhoto(file, servicePostId) {
 }
 
 export async function createServicePostMultipart(payload, files = []) {
-  const API =  "http://localhost:8080";
   const token = localStorage.getItem("token");
 
   const formData = new FormData();

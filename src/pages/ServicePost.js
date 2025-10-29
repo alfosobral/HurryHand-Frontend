@@ -118,7 +118,7 @@ export default function ServicePost() {
         console.log(JSON.stringify(payload, null, 2));
 
       await createServicePostMultipart(payload, form.portfolio);
-      navigate("/home_page");
+      navigate("/");
     } catch (err) {
       const data = err?.data || err?.payload;
       const mapped = mapBackendErrorsToFields(data);
