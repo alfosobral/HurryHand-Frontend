@@ -123,11 +123,63 @@ export async function getServicePostById(id) {
     });
 
     const data = await parseJsonResponse(res);
-    console.log("📥 getServicePostById response:", data);
+    console.log("getServicePostById response:", data);
     return data;
   } catch (err) {
-    console.error("❗ getServicePostById error", err);
+    console.error("getServicePostById error", err);
     throw err;
+  }
+}
+
+
+
+export async function deleteServicePost(servicePostId, token) {
+  try {
+    const response = await fetch(`${API}/api/service-post/${servicePostId}`, {
+      method: "DELETE",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Error al eliminar el servicio.");
+    }
+
+    const data = await response.json();
+    return data;
+
+  } catch (error) {
+    console.error("Error en deleteServicePost:", error);
+    throw error;
+  }
+}
+
+export async function deleteAvailableDate(servicePostId, date, token) {
+  try {
+    const url = `${API}/api/service-post/${servicePostId}/available-dates?date=${encodeURIComponent(date)}`;
+
+    const response = await fetch(url, {
+      method: "DELETE",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Error al eliminar la fecha disponible.");
+    }
+
+    const data = await response.json();
+    return data;
+
+  } catch (error) {
+    console.error("Error en deleteAvailableDate:", error);
+    throw error;
   }
 }
 

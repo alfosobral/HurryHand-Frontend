@@ -11,6 +11,7 @@ import {es} from "date-fns/locale";
 import SelectableList from "../components/SelectableList/SelectableList";
 import SubmitButton from "../components/SubmitButton/SubmitButton";
 import {createAppointment} from "../services/appointmentService";
+import {compareNumbers} from "@fullcalendar/core/internal";
 
 
 
@@ -22,6 +23,7 @@ export default function ServicePostInfo() {
 
     const [user, setUser] = useState(null);
     const [hasSession, setHasSession] = useState(false);
+    const [serviceProvider, setServiceProvider] = useState(false);
     const [servicePost, setServicePost] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -42,6 +44,7 @@ export default function ServicePostInfo() {
                 setUser(userData || null);
                 setHasSession(!!userData && userData !== false);
                 setServicePost(serviceData || null);
+
             } catch (err) {
                 console.error("Error cargando datos:", err);
             } finally {
@@ -50,6 +53,16 @@ export default function ServicePostInfo() {
         })();
 
     }, [id]);
+
+    useEffect(() => {
+        if (user && servicePost) {
+            const isProvider = user.id === servicePost.providerId;
+            setServiceProvider(isProvider);
+            setHasSession(!!user && user !== false);
+            console.log(hasSession)
+            console.log("Coinciden:", serviceProvider);
+        }
+    }, [user, servicePost]);
 
     useEffect(() => {
         if (reserva.dateTime) {
@@ -192,16 +205,48 @@ export default function ServicePostInfo() {
                                         className="custom-scroll"
                                     />
 
-                                    <SubmitButton
-                                        onClick={handleReserveClick}
-                                        className="service-post-info-available-dates-button"
-                                        disabled={!hasSession}
-                                        aria-disabled={!hasSession}
-                                    >
-                                        {hasSession ? "Reservar Servicio" : "Inicia Sesión"}
-                                    </SubmitButton>
+                                    {serviceProvider ? (
+                                        <>
+                                            <SubmitButton
+
+                                                className="service-post-info-available-add-dates-button"
+                                            >
+                                                Agregar Fecha
+                                            </SubmitButton>
+
+                                            <SubmitButton
+
+                                                className="service-post-info-available-delete-dates-button"
+                                                disabled={!hasSession}
+                                                aria-disabled={!hasSession}
+                                            >
+                                                Borrar Fecha
+                                            </SubmitButton>
+                                            {warnNoDate && <p className="select-warning">Seleccioná una fecha antes de reservar</p>}
+
+                                            <SubmitButton
+
+                                                className="service-post-info-available-delete-post-button"
+                                                disabled={!hasSession}
+                                                aria-disabled={!hasSession}
+                                            >
+                                                Borrar Service Post
+                                            </SubmitButton>
+                                        </>
+                                    ) : (
+
+                                        <SubmitButton
+                                            onClick={handleReserveClick}
+                                            className="service-post-info-available-dates-button"
+                                            disabled={!hasSession}
+                                            aria-disabled={!hasSession}
+                                        >
+                                            {hasSession ? "Reservar Servicio" : "Inicia Sesión"}
+                                        </SubmitButton>
+                                    )}
                                 </>
                             )}
+
                             {warnNoDate && <p className="select-warning">Seleccioná una fecha antes de reservar</p>}
                         </form>
                     </div>

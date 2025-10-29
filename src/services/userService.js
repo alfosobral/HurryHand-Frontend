@@ -1,7 +1,4 @@
 
-
-
-
 export async function getLoggedUser() {
     const token = localStorage.getItem("token");
 
