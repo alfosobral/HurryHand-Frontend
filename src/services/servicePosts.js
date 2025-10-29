@@ -141,8 +141,10 @@ export async function getServicePostById(id) {
 
 
 
-export async function deleteServicePost(servicePostId, token) {
+export async function deleteServicePost(servicePostId, ) {
   try {
+    const token = localStorage.getItem("token");
+
     const response = await fetch(`${API}/api/service-post/${servicePostId}`, {
       method: "DELETE",
       headers: {
@@ -165,9 +167,11 @@ export async function deleteServicePost(servicePostId, token) {
   }
 }
 
-export async function deleteAvailableDate(servicePostId, date, token) {
+export async function deleteAvailableDate(servicePostId, date) {
   try {
     const url = `${API}/api/service-post/${servicePostId}/available-dates?date=${encodeURIComponent(date)}`;
+    const token = localStorage.getItem("token");
+
 
     const response = await fetch(url, {
       method: "DELETE",
@@ -191,4 +195,30 @@ export async function deleteAvailableDate(servicePostId, date, token) {
   }
 }
 
+export async function addAvailableDate(servicePostId, date) {
+  try {
+    const url = `${API}/api/service-post/${servicePostId}/available-dates?date=${encodeURIComponent(date)}`;
+    const token = localStorage.getItem("token");
+
+    const response = await fetch(url, {
+      method: "PATCH",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Error al agregar la fecha disponible.");
+    }
+
+    const data = await response.json();
+    return data;
+
+  } catch (error) {
+    console.error("Error en addAvailableDate:", error);
+    throw error;
+  }
+}
 

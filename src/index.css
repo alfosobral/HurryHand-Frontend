@@ -161,3 +161,12 @@ h1, h2, h3, h4, h5, h6, p, div, span, input, button, textarea, select, label {
   font-family: 'Montserrat', sans-serif;
 }
 
+html[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+html[data-theme="light"],
+:root:not([data-theme="dark"]) {
+  color-scheme: light;
+}
+
