@@ -1,4 +1,4 @@
-import style from "./styles/ServicePostInfo.css";
+import "./styles/ServicePostInfo.css";
 import {getLoggedUser} from "../services/userService";
 import {getServicePostById} from "../services/servicePosts";
 import {useEffect, useState} from "react";
