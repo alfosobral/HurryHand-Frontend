@@ -1,0 +1,120 @@
+.user-services-history-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--background-color);
+  min-height: 100vh;
+  padding-bottom: 2rem;
+}
+
+.user-services-history-body {
+  margin-top: 2rem;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.user-services-history-title { 
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 2 5px;
+  margin-top: 75px;
+
+  color: #ffffffe7;
+}
+
+.user-services-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.user-service-card {
+    width: 100%;
+    padding: 1rem;
+    background: var(--card-bg, hsla(0, 8%, 87%, 0.40));
+    border: 1px solid var(--card-border, rgba(0,0,0,.08));
+    box-shadow: var(--shadow-lg, 0 10px 30px rgba(0,0,0,.15));
+    border-radius: var(--card-radius, 12px);
+}
+
+.user-service-card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.user-service-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.user-service-title {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #ffffff;
+}
+
+.user-service-date {
+  color: #ffffff;
+  font-size: 0.95rem;
+}
+
+
+.user-service-duration {
+  color: #ffffff;
+  font-size: 0.9rem;
+}
+
+
+.user-service-review-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.user-service-review-button:hover {
+  transform: scale(1.1);
+}
+
+.review-icon {
+  width: 26px;
+  height: 26px;
+}
+
+.no-services-message {
+  text-align: center;
+  font-style: italic;
+  color: #ff0000;
+  margin-top: 2rem;
+}
+
+
+.Build-your-review-card{
+    width: 100%;
+    padding: 1rem;
+    background: var(--card-bg, hsla(0, 8%, 87%, 0.40));
+    border: 1px solid var(--card-border, rgba(0,0,0,.08));
+    box-shadow: var(--shadow-lg, 0 10px 30px rgba(0,0,0,.15));
+    border-radius: var(--card-radius, 12px);
+    margin-top: 15px;
+}
+
+.card-title-make-review{
+    margin-top: 10px;
+    text-align: center;
+    font-size: 1.4rem;
+
+}
+
+.submit-button-review{
+    width: 100px;
+    align-self: center;
+    margin-top: 25px;
+}
+

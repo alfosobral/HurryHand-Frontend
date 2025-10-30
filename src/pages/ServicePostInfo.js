@@ -1,8 +1,5 @@
 import "./styles/ServicePostInfo.css";
-import {getLoggedUser} from "../services/userService";
-import {getServicePostById} from "../services/servicePosts";
-import {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+
 
 import ImageCarousel from "../components/ ImageCarousel/ImageCarousel";
 import Navbar from "../components/Navbar/Navbar";
@@ -15,7 +12,6 @@ import { es } from "date-fns/locale";
 import SelectableList from "../components/SelectableList/SelectableList";
 import SubmitButton from "../components/SubmitButton/SubmitButton";
 import { createAppointment } from "../services/appointmentService";
-import style from "./styles/ServicePostInfo.css";
 import DateField from "../components/DateField/DateField";
 import { deleteServicePost } from "../services/servicePosts";
 
