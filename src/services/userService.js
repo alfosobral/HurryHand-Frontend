@@ -1,3 +1,4 @@
+const API = process.env.REACT_APP_API_URL
 
 export async function getLoggedUser() {
     const token = localStorage.getItem("token");
@@ -7,23 +8,23 @@ export async function getLoggedUser() {
     }
 
     try {
-        const res = await fetch("http://localhost:8080/auth/me", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-            },
-        });
+        const res = await fetch(`${API}/auth/me`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            });
 
-        if (res.status === 401) {
-            return null;
-        }
+            if (res.status === 401) {
+                return null;
+            }
 
-        if (!res.ok) {
-            throw new Error("Error al obtener usuario");
-        }
+            if (!res.ok) {
+                throw new Error("Error al obtener usuario");
+            }
 
-        return await res.json(); //UserResponseDTO
+            return await res.json(); //UserResponseDTO
 
     } catch (error) {
         console.error("Error en getLoggedUser:", error);
