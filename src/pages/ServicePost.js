@@ -8,6 +8,7 @@ import CheckBox from "../components/CheckBox/CheckBox";
 import DateField from "../components/DateField/DateField";
 import TextAreaField from "../components/TextAreaField/TextAreaField";
 import MultiSelectField from "../components/MultiSelectField/MultiSelectField";
+import ProfileNavbar from "../components/ProfileNavbar/ProfileNavbar";
 
 import { DURATION_OPTIONS, DAYS, initialServicePost } from "../constants/servicePostConstants";
 import { URU_DEPARTMENTS } from "../constants/locations";
@@ -134,7 +135,7 @@ export default function ServicePost() {
   };
 
   return (
-    <div className={styles.page}>
+    <div className={styles.page}><ProfileNavbar />
       <Card as="form" onSubmit={onSubmit} style={{ width: 720, maxWidth: "95vw" }}>
         <h1 className={styles.title}>Publicar servicio</h1>
 
