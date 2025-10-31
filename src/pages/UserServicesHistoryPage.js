@@ -30,7 +30,6 @@ export default function UserServicesHistoryPage() {
     };
 
     const handleSubmit = async (serviceId) => {
-        // Construimos el cuerpo de la review
         const reviewData = {
             appointmentID: serviceId,
             title: "Reseña del usuario",
@@ -42,25 +41,21 @@ export default function UserServicesHistoryPage() {
 
         try {
             await createReview(reviewData);
-            console.log("✅ Review enviada con éxito:", reviewData);
-
-            // ✅ Aplicar animación de desvanecimiento
+            
             const card = document.querySelector(`[data-service-id="${serviceId}"]`);
             if (card) {
             card.classList.add("fade-out");
             }
 
-            // ⏳ Esperar a que termine la animación antes de borrar
             setTimeout(() => {
                 setServices((prev) => prev.filter((s) => s.appointmentId !== serviceId));
-            }, 500); // mismo tiempo que la animación
+            }, 500); 
 
             setComment("");
             setActiveService(null);
 
         } catch (error) {
-            console.error("❌ Error al enviar review:", error);
-            alert("Ocurrió un error al enviar la review");
+            alert("Error review");
         }
     };
 
@@ -68,7 +63,7 @@ export default function UserServicesHistoryPage() {
     const handleRatingChange = (serviceId, newRating) => {
         setRatings((prev) => ({
         ...prev,
-        [serviceId]: newRating, // Guarda el valor para ese servicio
+        [serviceId]: newRating,
         }));
     };
 
