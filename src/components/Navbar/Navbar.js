@@ -73,7 +73,7 @@ export default function Navbar({
     logout?.();
     deleteJwt();
     setHasToken(false);
-    window.location.href = "/login";
+    window.location.href = "/";
   };
 
 
