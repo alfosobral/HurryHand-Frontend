@@ -262,10 +262,7 @@ export default function ServicePostInfo() {
                 <div className="service-post-info-block">
                     <div className="service-post-info-block-col1">
                         <ImageCarousel
-                            images={[
-                                "https://ferrari-cdn.thron.com/delivery/public/thumbnail/ferrari/4096b5fd-63e2-4a12-af3b-45ae75e4c60b/bocxuw/std/488x325/4096b5fd-63e2-4a12-af3b-45ae75e4c60b?scalemode=auto",
-                                "https://cdn.ferrari.com/cms/network/media/img/resize/66e0571870dcce0011d9c5d0-2002_enzoferrari_cassetto-archivio_02-new?",
-                            ]}
+                            images={servicePost.photosURLs}
                             className="image-carrousel"
                             height="auto"
                             width="550px"
