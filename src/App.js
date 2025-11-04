@@ -9,6 +9,7 @@ import ServicePost from "./pages/ServicePost"
 import Profile from "./pages/Profile"
 import Calendar from "./pages/Calendar"
 import ServicePostInfo from "./pages/ServicePostInfo";
+import UserServicesHistoryPage from "./pages/UserServicesHistoryPage";
 
 
 export default function App() {
@@ -36,6 +37,8 @@ export default function App() {
           <Route path="/service-post" element={<ServicePost />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/calendar" element={<Calendar />} />
+          <Route path="/user-services-history" element={<UserServicesHistoryPage />} />
+
         </Routes>
       </BrowserRouter>
     </AuthProvider>

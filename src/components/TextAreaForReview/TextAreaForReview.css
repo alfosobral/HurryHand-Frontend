@@ -1,0 +1,34 @@
+.textarea-for-review {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.textarea-for-review-label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--text, #222);
+}
+
+.textarea-for-review-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--field-border, #ccc);
+  border-radius: 10px;
+  background: var(--field-bg, rgba(255, 255, 255, 0.95));
+  color: var(--text, #333);
+  font-size: 1rem;
+  line-height: 1.5;
+  resize: vertical; /* Se puede agrandar hacia abajo */
+  min-height: 150px;
+  white-space: pre-wrap; /* Envuelve líneas */
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.textarea-for-review-input:focus {
+  outline: none;
+  border-color: #4fa3ff;
+  box-shadow: 0 0 4px rgba(79, 163, 255, 0.4);
+}

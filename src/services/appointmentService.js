@@ -24,4 +24,22 @@ export async function createAppointment(createAppointmentDTO) {
     }
 
     return res.json();
+
 }
+
+
+export async function getMyPastAppointments() {
+  const token = localStorage.getItem("token");
+
+  const res = await fetch(`${API_BASE}/api/appointment/past/my`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!res.ok) throw new Error("Error devolviendo los appointments pasados del usuario logueado");
+  return await res.json(); 
+}
+

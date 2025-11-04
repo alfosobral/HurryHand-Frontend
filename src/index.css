@@ -93,6 +93,8 @@ code {
 
   --strength-track: #e5e7eb;
 
+  --reservation-bg:#d1e7dd;
+
   /* Paneles desplegables (Select/Date) */
   --panel-bg: rgba(255,255,255,0.9);
   --panel-border: rgba(0,0,0,.12);
@@ -122,7 +124,7 @@ code {
   --label: #e7ecf8;
   --placeholder: #a3a9b7;
 
-  --field-bg: rgba(255,255,255,0.08);
+  --field-bg: rgba(255, 255, 255, 0.08);
   --field-fg: #e7ecf8;
   --field-border: #334155;
   --field-border-focus: #60a5fa;
@@ -136,6 +138,8 @@ code {
 
   --strength-track: #142343;
 
+  --reservation-bg:#082819;
+
   --panel-bg: rgba(17, 24, 39, 0.95);
   --panel-border: rgba(255,255,255,0.12);
   --panel-shadow: 0 14px 40px rgba(0,0,0,.45);
@@ -145,7 +149,7 @@ code {
   --search-shadow: 0 10px 30px rgba(0,0,0,.45);
 
   --btn-bg:#60a5fa; --btn-fg:#0b1220;
-  --btn-bg-disabled:#475569; --btn-fg-disabled:#cbd5e1;
+  --btn-bg-disabled:#324258; --btn-fg-disabled:#cbd5e1;
 
   --nav-bg: rgba(6, 11, 19, 0.95);
   --nav-panel-bg: rgba(16, 26, 46, 0.95);
