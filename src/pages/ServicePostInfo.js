@@ -263,10 +263,7 @@ export default function ServicePostInfo() {
                 <div className="service-post-info-block">
                     <div className="service-post-info-block-col1">
                         <ImageCarousel
-                            images={[
-                                "https://ferrari-cdn.thron.com/delivery/public/thumbnail/ferrari/4096b5fd-63e2-4a12-af3b-45ae75e4c60b/bocxuw/std/488x325/4096b5fd-63e2-4a12-af3b-45ae75e4c60b?scalemode=auto",
-                                "https://cdn.ferrari.com/cms/network/media/img/resize/66e0571870dcce0011d9c5d0-2002_enzoferrari_cassetto-archivio_02-new?",
-                            ]}
+                            images={servicePost.photosURLs}
                             className="image-carrousel"
                             height="auto"
                             width="550px"
@@ -300,48 +297,30 @@ export default function ServicePostInfo() {
                     <div className="service-post-info-block-col3">
                         <form className="service-post-info-form">
                             <h2 className="service-post-info-available-dates-title">Fechas Disponibles</h2>
+
                             {!servicePost.availableDates || servicePost.availableDates.length === 0 ? (
                                 <p className="no-dates-warning">No hay fechas disponibles para este servicio.</p>
                             ) : (
-                                <>
-                                    <SelectableList
-                                        items={createDatesList(servicePost.availableDates)}
-                                        height="60vh"
-                                        width="100%"
-                                        multiple={false}
-                                        onChange={handleDateChange}
-                                        className="custom-scroll"
-                                    />
+                                <SelectableList
+                                    items={createDatesList(servicePost.availableDates)}
+                                    height="60vh"
+                                    width="100%"
+                                    multiple={false}
+                                    onChange={handleDateChange}
+                                    className="custom-scroll"
+                                />
+                            )}
 
-                                    {serviceProvider ? (
-                                        <>
-                                            <SubmitButton
-                                                className="service-post-info-available-add-dates-button"
-                                                onClick={handleAddClick}
-                                                disabled={!hasSession}
-                                                aria-disabled={!hasSession}
-                                            >
-                                                Agregar Fecha
-                                            </SubmitButton>
-
-                                            <SubmitButton
-                                                className="service-post-info-available-delete-dates-button"
-                                                disabled={!hasSession}
-                                                aria-disabled={!hasSession}
-                                                onClick={handleDeleteClick}
-                                            >
-                                                Borrar Fecha
-                                            </SubmitButton>
-
-                                            <SubmitButton
-                                                className="service-post-info-available-delete-post-button"
-                                                disabled={!hasSession}
-                                                aria-disabled={!hasSession}
-                                                onClick={handleDeletePostClick}
-                                            >
-                                                Borrar Service Post
-                                            </SubmitButton>
-                                        </>
+                            {servicePost.availableDates && servicePost.availableDates.length > 0 && (
+                                serviceProvider ? (
+                                        <SubmitButton
+                                            className="service-post-info-available-delete-dates-button"
+                                            disabled={!hasSession}
+                                            aria-disabled={!hasSession}
+                                            onClick={handleDeleteClick}
+                                        >
+                                            Borrar Fecha
+                                        </SubmitButton>
                                     ) : (
                                         <SubmitButton
                                             onClick={handleReserveClick}
@@ -351,9 +330,30 @@ export default function ServicePostInfo() {
                                         >
                                             {hasSession ? "Reservar Servicio" : "Inicia Sesión"}
                                         </SubmitButton>
-                                    )}
+                                    )
+                            )}
+                            {serviceProvider && (
+                                <>
+                                    <SubmitButton
+                                        className="service-post-info-available-add-dates-button"
+                                        onClick={handleAddClick}
+                                        disabled={!hasSession}
+                                        aria-disabled={!hasSession}
+                                    >
+                                        Agregar Fecha
+                                    </SubmitButton>
+
+                                    <SubmitButton
+                                        className="service-post-info-available-delete-post-button"
+                                        disabled={!hasSession}
+                                        aria-disabled={!hasSession}
+                                        onClick={handleDeletePostClick}
+                                    >
+                                        Borrar Service Post
+                                    </SubmitButton>
                                 </>
                             )}
+
                             {warnNoDateForDelete && <p className="select-warning">Seleccioná una fecha para borrarla</p>}
                             {warnNoDate && <p className="select-warning">Seleccioná una fecha antes de reservar</p>}
                         </form>
