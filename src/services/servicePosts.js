@@ -141,7 +141,7 @@ export async function getServicePostById(id) {
 
 
 
-export async function deleteServicePost(servicePostId) {
+export async function deleteServicePost(servicePostId, ) {
   try {
     const token = localStorage.getItem("token");
 

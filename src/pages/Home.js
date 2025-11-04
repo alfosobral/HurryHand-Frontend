@@ -1,5 +1,5 @@
 // src/pages/Home.js
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "../components/Navbar/Navbar";
 import ServiceCard from "../components/ServiceCard/ServiceCard";
 import { listServicePosts } from "../services/servicePosts";
@@ -24,18 +24,48 @@ function formatPrice(price) {
 }
 
 export default function Home() {
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["servicePosts", { page: 1, size: 12 }],
-    queryFn: () => listServicePosts({ page: 1, size: 12 }),
+  const [searchQuery, setSearchQuery] = useState("");
+  const [page, setPage] = useState(1);
+  const size = 12;
+
+  const {
+    data,
+    isLoading,
+    isError,
+    error,
+    isFetching,
+  } = useQuery({
+    queryKey: ["servicePosts", page, size, searchQuery], // <--- clave separada
+    queryFn: () => listServicePosts({ page, size, query: searchQuery }),
+    keepPreviousData: true,
   });
 
   const posts = data?.content ?? [];
+  const totalPages = data?.totalPages ?? 1;
   const bullet = "\u2022";
   const noServicesMessage = `Todavía no hay servicios publicados.`;
 
+  const handlePrev = () => {
+    if (page > 1) setPage((p) => p - 1);
+  };
+
+  const handleNext = () => {
+    if (page < totalPages) setPage((p) => p + 1);
+  };
+
   return (
     <div className={styles.page}>
-      <Navbar />
+
+      <Navbar 
+        onSearch={(q) => {
+          setSearchQuery((prev) => {
+            // solo reiniciamos a página 1 si el texto cambió realmente
+            if (prev !== q) setPage(1);
+            return q;
+          });
+        }}
+      />
+
       <div className={styles.mainWrap}>
         <div className={styles.gridWrap}>
           {isLoading &&
@@ -72,6 +102,31 @@ export default function Home() {
             );
           })}
         </div>
+
+        {/* === PAGINACIÓN === */}
+        {!isError && posts.length > 0 && (
+          <div className={styles.pagination}>
+            <button
+              onClick={handlePrev}
+              disabled={page === 1 || isFetching}
+              className={styles.pageButton}
+            >
+              Anterior
+            </button>
+
+            <span className={styles.pageInfo}>
+              Página {page} de {totalPages}
+            </span>
+
+            <button
+              onClick={handleNext}
+              disabled={page >= totalPages || isFetching}
+              className={styles.pageButton}
+            >
+              Siguiente
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
