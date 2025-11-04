@@ -1,0 +1,44 @@
+.review-btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid #333;
+  border-radius: 10px;
+  background: #fff;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.review-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.review-btn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.review-btn:focus-visible {
+  outline: 2px solid #4c9ffe;
+  outline-offset: 2px;
+}
+
+.review-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.review-fallback {
+  display: none;
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* Si la imagen no carga, se muestra el emoji ✏️ */
+.review-btn img[style*="display: none"] + .review-fallback {
+  display: inline-block;
+}
