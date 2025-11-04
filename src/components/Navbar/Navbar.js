@@ -73,7 +73,7 @@ export default function Navbar({
     logout?.();
     deleteJwt();
     setHasToken(false);
-    window.location.href = "/login";
+    window.location.href = "/";
   };
 
 
@@ -98,9 +98,6 @@ export default function Navbar({
         className={`${styles.panelBase} ${styles.leftPos} ${menuOpen ? styles.panelOpen : styles.panelClosed}`}
         aria-hidden={!menuOpen}
       >
-        <a href="/" className={styles.sideLink} onClick={() => setMenuOpen(false)}>
-          Categorías
-        </a>
         <a href="/service-post" className={styles.sideLink} onClick={() => setMenuOpen(false)}>
           Servicios
         </a>

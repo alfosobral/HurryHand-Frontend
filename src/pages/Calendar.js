@@ -114,54 +114,27 @@ export default function Calendar() {
   []);
 
   return (
-    <div style={{ minHeight: "100vh", position: "relative", overflowX: "hidden" }}>
+    <div className="calendar-root">
       {/* contenido base (sin blur). El blur se aplica en el overlay usando backdrop-filter */}
       <div>
         <Navbar />
-        <div
-          style={{
-            padding: "120px 24px 40px",
-            background: "var(--bg)",
-          }}
-        >
-          <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative" }}>
-            <Card style={{ width: "100%", maxWidth: "100%", padding: "32px", gap: "16px" }}>
-            <header style={{ marginBottom: "12px" }}>
-              <h2 style={{ margin: "0 0 4px 0" }}>Mi Calendario</h2>
-              <p style={{ margin: 0, color: "var(--placeholder)" }}>
+        <div className="calendar-wrap">
+          <div className="calendar-container">
+            <Card className="calendar-card">
+            <header className="calendar-header">
+              <h2>Mi Calendario</h2>
+              <p>
                 Visualiza tus reservas confirmadas, pendientes o canceladas.
               </p>
             </header>
 
             {error && (
               <div
-                style={{
-                  padding: "12px 16px",
-                  background: "#f8d7da",
-                  border: "1px solid #f5c6cb",
-                  borderRadius: "8px",
-                  color: "#721c24",
-                  fontSize: "14px",
-                  marginBottom: "16px",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  gap: "12px",
-                  flexWrap: "wrap",
-                }}
+                className="calendar-error"
               >
                 <span>{error}</span>
                 <button
-                  onClick={loadEvents}
-                  style={{
-                    border: "none",
-                    borderRadius: "6px",
-                    padding: "8px 12px",
-                    cursor: "pointer",
-                    background: "#0ea5e9",
-                    color: "#fff",
-                    fontWeight: 600,
-                  }}
+                  className="calendar-retry"
                 >
                   Reintentar
                 </button>
@@ -169,36 +142,18 @@ export default function Calendar() {
             )}
 
             {!loading && !error && calendarEvents.length === 0 && (
-              <div
-                style={{
-                  padding: "18px",
-                  textAlign: "center",
-                  color: "#0f5132",
-                  background: "#d1e7dd",
-                  border: "1px solid #badbcc",
-                  borderRadius: "8px",
-                  marginBottom: "16px",
-                }}
-              >
+              <div className="calendar-empty">
                 <strong>No tienes reservas todavía</strong>
-                <div style={{ marginTop: "8px" }}>
+                <div className="calendar-empty-note">
                   Cuando reserves un servicio, aparecerá aquí en tu calendario.
                 </div>
               </div>
             )}
 
-            <div style={{ minHeight: "620px", position: "relative" }}>
+            <div className="calendar-body">
               {loading ? (
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    height: "100%",
-                    color: "var(--placeholder)",
-                  }}
-                >
-                  <p style={{ margin: 0 }}>Cargando eventos...</p>
+                <div className="calendar-loading">
+                  <p className="calendar-loading-text">Cargando eventos...</p>
                 </div>
               ) : (
                 <div>
@@ -212,15 +167,7 @@ export default function Calendar() {
                     onView={setCurrentView}
                     date={currentDate}
                     onNavigate={(d) => setCurrentDate(d)}
-                    style={{ height: 650 }}
-                    components={{
-                      event: ({ event }) => (
-                        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, textAlign: "center", width: "100%", height: "100%" }}>
-                          <span style={{ padding: 2 }}>{event.title}</span>
-                        </div>
-                      )
-                    }}
-                    formats={{ eventTimeRangeFormat: () => "" }}
+                    className="calendar-rbc"
                     eventPropGetter={(event) => ({ style: { backgroundColor: getEventColor(event.status), borderColor: getEventColor(event.status) } })}
                     onSelectEvent={(e) => handleEventClick(e)}
                   />
@@ -228,24 +175,12 @@ export default function Calendar() {
               )}
             </div>
             {selectedEvent && (
-              <div
-                style={{
-                  position: "fixed",
-                  inset: 0,
-                  backdropFilter: "blur(12px)",
-                  WebkitBackdropFilter: "blur(12px)",
-                  background: "rgba(0,0,0,0.01)", // casi transparente, evita el tinte gris
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  zIndex: 9999,
-                }}
-              >
-                <div style={{ position: "absolute", inset: 0 }} onClick={() => setSelectedEvent(null)} />
-                <Card style={{ width: 420, maxWidth: "90vw", position: "relative", zIndex: 10000 }}>
-                  <button onClick={() => setSelectedEvent(null)} aria-label="Cerrar" style={{ position: "absolute", left: 12, top: 12, background: "transparent", border: "none", fontSize: 18, cursor: "pointer" }}>✕</button>
-                  <h3 style={{ marginTop: 0 }}>{selectedEvent.title}</h3>
-                  <div style={{ color: "#555", fontSize: 14 }}>
+              <div className="calendar-modal-overlay">
+                <div className="calendar-modal-backdrop" onClick={() => setSelectedEvent(null)} />
+                <Card className="calendar-modal-card">
+                  <button onClick={() => setSelectedEvent(null)} aria-label="Cerrar" className="calendar-modal-close">✕</button>
+                  <h3 className="calendar-modal-title">{selectedEvent.title}</h3>
+                  <div className="calendar-modal-details">
                     <div><strong>Inicio:</strong> {selectedEvent.start?.toLocaleString("es-ES", { hour12: false })}</div>
                     <div><strong>Fin:</strong> {selectedEvent.end?.toLocaleString("es-ES", { hour12: false })}</div>
                     <div><strong>Estado:</strong> {selectedEvent.status || "N/A"}</div>
@@ -257,14 +192,10 @@ export default function Calendar() {
           </div>
         </div>
       </div>
-      {/* flotante permanente */}
+      {/* flotante permanente */} 
       <ChangeTheme
-        style={{
-          position: "fixed",
-          left: "16px",
-          bottom: "16px",
-          zIndex: 10000,
-        }}
+        className="ChangeTheme"
+      
       />
     </div>
   );

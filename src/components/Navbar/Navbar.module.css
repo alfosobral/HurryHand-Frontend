@@ -44,9 +44,9 @@
   border-radius: 6px;
   padding: 12px;
   background: rgba(225, 220, 220, 0.4);
-  color: white;
+  color: var(--text);
   text-decoration: none;
-  background-color: #42b3fd;
+  background-color: var(--btn-bg);
 }
 
 .panelBase {

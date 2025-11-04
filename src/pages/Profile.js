@@ -22,6 +22,7 @@ import {
   getMeByEmail, patchEmail, patchName, patchPassword, patchPhone, patchSurname,
   uploadProfilePhoto, listCredentials, createCredential, becomeProvider
 } from "../services/profileService";
+import { useScroll } from "framer-motion";
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -40,6 +41,14 @@ export default function Profile() {
 
   const [credentials, setCredentials] = useState([]);
   const [loadingCredentials, setLoadingCredentials] = useState(true);
+
+  const resolveRemoteUrl = (url) => {
+    if (!url) return null;
+    if (/^https?:\/\//i.test(url)) return url;
+    const base = (process.env.REACT_APP_API_URL || "").replace(/\/$/, "");
+    if (!base) return url;
+    return `${base}${url.startWith("/") ? "" : "/"}${url}`;
+  }
 
   // Load user
   useEffect(() => {
@@ -184,11 +193,13 @@ export default function Profile() {
   // Credenciales
   const onCredentialImagePick = () => document.getElementById("credential-image-upload")?.click();
   const onCredentialImageUpload = async (e) => {
-    const file = e.target.files?.[0]; if (!file) return;
+    const file = e.target.files?.[0];
+    if (!file) return;
     const objUrl = URL.createObjectURL(file);
     setCredentialImagePreview(objUrl);
     try {
-      const url = await uploadProfilePhoto(file); // mismo endpoint que usabas
+      // utiliza el mismo endpoint de subida que usas para perfil si corresponde
+      const url = await uploadProfilePhoto(file);
       setField("credentialImageUrl", url);
       alert("Imagen subida");
     } catch {
@@ -198,6 +209,7 @@ export default function Profile() {
       URL.revokeObjectURL(objUrl);
     }
   };
+
 
   const onAddCredential = async (e) => {
     e.preventDefault();
