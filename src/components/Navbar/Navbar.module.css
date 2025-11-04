@@ -59,6 +59,7 @@
   -webkit-backdrop-filter: blur(5px);
   display: flex;
   flex-direction: column;
+  isolation: isolate;
   padding: 12px;
   z-index: 1001;
   transition: transform var(--duration) var(--easing);
@@ -73,7 +74,7 @@
 .leftPos.panelClosed { transform: translateX(-100%); }
 
 .sideLink {
-  color: #7f7d7dff;
+  color: var(--text);
   text-decoration: none;
   padding: 10px 12px;
   border-radius: 8px;
@@ -86,7 +87,7 @@
   background: none;
   border: none;
   text-align: left;
-  color: #7f7d7dff;
+  color: var(--text);
   padding: 10px 12px;
   border-radius: 8px;
   font-size: 16px;
@@ -98,7 +99,7 @@
 .menuButton {
   display: flex;
   align-items: center;
-  background: var(--searchbar-bg);
+  background: transparent;
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
   box-shadow: 0 10px 30px rgba(0,0,0,.2);
@@ -106,14 +107,15 @@
   overflow: hidden;
   position: relative;
   z-index: 0; /* base */
-  border: none;
+  border: transparent;
+  
   color: var(--placeholder);
   font-size: 24px;
   cursor: pointer;
   margin-left: 14px;
-  transition: transform .16s ease, box-shadow .16s ease, background-color .16s ease, backdrop-filter .16s ease;
+  transition: transform .16s ease, box-shadow .16s ease, backdrop-filter .16s ease;
   transform-origin: center;
-  will-change: transform, box-shadow, backdrop-filter, background-color;
+  will-change: transform, box-shadow, backdrop-filter, 
 }
 
 .menuButton:hover {
@@ -122,9 +124,10 @@
   box-shadow:
     0 6px 16px rgba(0,0,0,.18),
     0 0 0 3px rgba(255,255,255,.05); /* aro más fino */
-
   /* un pelín más opaca para destacarla */
-  background: var(--searchbar-bg);
+  background: transparent;
+  border: transparent;
+
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
 
