@@ -15,8 +15,8 @@
   gap: 10px;
 
   /* Colores por variables (con fallbacks) */
-  background: var(--btn-bg, #42b3fd);
-  color: var(--btn-fg, #fff);
+  background: var(--btn-bg);
+  color: var(--text, #fff);
 }
 
 .button:active { transform: translateY(1px); }
