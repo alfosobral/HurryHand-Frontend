@@ -9,7 +9,7 @@ import DateField from "../components/DateField/DateField";
 import SelectField from "../components/SelectField/SelectField";
 import PhoneField from "../components/PhoneField/PhoneField";
 import TextAreaField from "../components/TextAreaField/TextAreaField";
-import ProfileNavbar from "../components/ProfileNavbar/ProfileNavbar";
+import Navbar from "../components/Navbar/Navbar";
 import ChangeTheme from "../components/ChangeTheme/ChangeTheme"
 
 import styles from "./styles/Profile.module.css";
@@ -20,7 +20,7 @@ import { formPhoneToE164, userDtoToForm } from "../utils/profileMappers";
 import { getEmailFromJwt, getJwt } from "../utils/tokens";
 import {
   getMeByEmail, patchEmail, patchName, patchPassword, patchPhone, patchSurname,
-  uploadProfilePhoto, listCredentials, createCredential, becomeProvider
+  uploadProfilePhoto, listCredentials, createCredential, becomeProvider, uploadCredentialPhoto
 } from "../services/profileService";
 import { useScroll } from "framer-motion";
 
@@ -41,28 +41,27 @@ export default function Profile() {
 
   const [credentials, setCredentials] = useState([]);
   const [loadingCredentials, setLoadingCredentials] = useState(true);
-
-  const resolveRemoteUrl = (url) => {
-    if (!url) return null;
-    if (/^https?:\/\//i.test(url)) return url;
-    const base = (process.env.REACT_APP_API_URL || "").replace(/\/$/, "");
-    if (!base) return url;
-    return `${base}${url.startWith("/") ? "" : "/"}${url}`;
-  }
+  const [credentialImageFile, setCredentialImageFile] = useState(null);
 
   // Load user
   useEffect(() => {
+    let cancelled = false;
     const token = getJwt();
     const email = getEmailFromJwt(token);
     if (!email) {
       setError("No se encontró el email en el token");
       setLoading(false);
+      setLoadingCredentials(false);
       return;
     }
 
-    getMeByEmail(email)
-      .then((u) => {
-        setUser(u);
+    const refreshUser = async () => {
+      try {
+        const u = await getMeByEmail(email);
+        if (cancelled) return;
+        const profilePhoto = u?.profilePhoto ? `${u.profilePhoto}?t=${Date.now()}` : u?.profilePhoto;
+        setUser(u ? { ...u, profilePhoto } : u);
+
         const f = userDtoToForm(u);
         setForm(f);
         setOriginal({
@@ -72,17 +71,56 @@ export default function Profile() {
           phoneNumber: u.phoneNumber || "",
           provider: !!u.provider,
         });
-        setLoading(false);
+
         if (u.provider) {
-          listCredentials().then(setCredentials).catch(() => setCredentials([])).finally(() => setLoadingCredentials(false));
-        } else {
+          setLoadingCredentials(true);
+          let list = [];
+          try {
+            list = await listCredentials();
+          } catch (errList) {
+            console.debug("listCredentials error:", errList);
+            list = [];
+          }
+          if (cancelled) return;
+          setCredentials(list);
           setLoadingCredentials(false);
+          console.debug("refreshUser: provider=true, credentials:", list?.length);
+        } else {
+          setCredentials([]);
+          setLoadingCredentials(false);
+          console.debug("refreshUser: provider=false");
         }
-      })
-      .catch((e) => {
+
+        setLoading(false);
+      } catch (e) {
+        if (cancelled) return;
         setError(e.message || "Error al cargar el usuario");
         setLoading(false);
-      });
+        setLoadingCredentials(false);
+      }
+    };
+
+    const onStorage = (e) => { if (e.key === "token") refreshUser(); };
+
+    const onProfilePhotoUpdated = (ev) => {
+      const url = ev?.detail;
+      if (url) {
+        const final = url.includes("?t=") ? url : `${url}?t=${Date.now()}`;
+        setUser((u) => (u ? ({ ...u, profilePhoto: final }) : u));
+      } else {
+        refreshUser();
+      }
+    };
+
+    refreshUser();
+    window.addEventListener("storage", onStorage);
+    window.addEventListener("profilePhotoUpdated", onProfilePhotoUpdated);
+
+    return () => {
+      cancelled = true;
+      window.removeEventListener("storage", onStorage);
+      window.removeEventListener("profilePhotoUpdated", onProfilePhotoUpdated);
+    };
   }, []);
 
   // revoke previews
@@ -104,11 +142,13 @@ export default function Profile() {
       const url = await uploadProfilePhoto(file);
       const cacheBusted = url ? `${url}?t=${Date.now()}` : "";
       setUser((prev) => ({ ...prev, profilePhoto: cacheBusted }));
+      window.dispatchEvent(new CustomEvent("profilePhotoUpdated", { detail: cacheBusted }));
+      setPreview(null);
     } catch (err) {
       alert("Error al subir imagen de perfil");
       setPreview(null);
     } finally {
-      URL.revokeObjectURL(objUrl);
+      try { URL.revokeObjectURL(objUrl); } catch {}
     }
   };
 
@@ -192,24 +232,13 @@ export default function Profile() {
 
   // Credenciales
   const onCredentialImagePick = () => document.getElementById("credential-image-upload")?.click();
-  const onCredentialImageUpload = async (e) => {
+  const onCredentialImageUpload = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
     const objUrl = URL.createObjectURL(file);
     setCredentialImagePreview(objUrl);
-    try {
-      // utiliza el mismo endpoint de subida que usas para perfil si corresponde
-      const url = await uploadProfilePhoto(file);
-      setField("credentialImageUrl", url);
-      alert("Imagen subida");
-    } catch {
-      alert("Error al subir la imagen de credencial");
-      setCredentialImagePreview(null);
-    } finally {
-      URL.revokeObjectURL(objUrl);
-    }
+    setCredentialImageFile(file);
   };
-
 
   const onAddCredential = async (e) => {
     e.preventDefault();
@@ -227,10 +256,30 @@ export default function Profile() {
         issuedAt: form.credentialDate,
         startedAt: form.credentialDate,
         completedAt: form.credentialDate,
-        certificateUrl: form.credentialImageUrl || null,
+        certificateUrl: null,
         credentialStatus: "VERIFIED",
       };
-      await createCredential(payload);
+      const createResp = await createCredential(payload);
+      console.debug("createCredential response:", createResp);
+      let newId = createResp?.id || createResp?.data?.id || createResp?.credentialId || null;
+      if (!newId) {
+        const after = await listCredentials();
+        const found = after.find((it) =>
+          it.name === payload.name && it.issuer === payload.issuer && it.issuedAt === payload.issuedAt
+        );
+        newId = found?.id || null;
+        console.debug("Fallback found created credential:", found);
+      }
+      if (credentialImageFile && newId) {
+        try {
+          const uploadedUrl = await uploadCredentialPhoto(newId, credentialImageFile);
+          console.debug("uploadCredentialPhoto returned:", uploadedUrl);
+        } catch (errUpload) {
+          console.error("Error subiendo imagen de credencial:", errUpload);
+          alert("La credencial se creó pero falló la subida de la imagen.");
+        }
+      }
+
       const list = await listCredentials();
       setCredentials(list);
       setForm((f) => ({
@@ -239,6 +288,7 @@ export default function Profile() {
         credentialIssuer: "", credentialDate: "", credentialExpiryDate: "",
       }));
       setCredentialImagePreview(null);
+      setCredentialImageFile(null);
       alert("Credencial agregada");
     } catch (err) {
       alert("Error al agregar credencial: " + (err.message || err));
@@ -251,13 +301,17 @@ export default function Profile() {
 
   return (
     <div className={styles.page}>
-      <ProfileNavbar />
+      <Navbar searchbarOff menuOff prev profileOff/>
 
       <div className={styles.container}>
         {/* Perfil */}
         <Card style={{with: "60vw"}}>
-          <div className={styles.sectionTitle}>Perfil del Usuario</div>
-
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
+            <div className={styles.sectionTitle}>Perfil del Usuario</div>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <ChangeTheme />
+            </div>
+          </div>
           <div className={styles.avatarBox}>
             {(preview || user?.profilePhoto) ? (
               <img

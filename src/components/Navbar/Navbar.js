@@ -132,17 +132,20 @@ export default function Navbar({
                     className={styles.profileBtn}
                     aria-label="Abrir menú de perfil"
                   >
-                    {profilePhoto && (
+                    {profilePhoto ? (
                       <img
                         src={profilePhoto}
                         alt="Foto de perfil"
                         className={styles.profileImg}
                         onError={(e) => {
-                          e.currentTarget.style.display = "none";
+                          // si no se puede cargar la imagen, borramos la foto para que se vea el ícono
+                          e.currentTarget.onerror = null;
+                          setProfilePhoto(null);
                         }}
                       />
+                    ) : (
+                      <FaUserCircle className={styles.profileIcon} />
                     )}
-                    <FaUserCircle className={styles.profileIcon} />
                   </button>
                 </div>
 

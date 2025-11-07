@@ -13,6 +13,17 @@
   color: var(--text);
 }
 
+
+.sectionTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--field-border);
+  padding-bottom: 8px;
+  text-align: center;
+}
+
 .steps {
   display: grid;
   grid-template-columns: repeat(3,1fr);

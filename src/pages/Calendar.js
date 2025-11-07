@@ -117,7 +117,7 @@ export default function Calendar() {
     <div className="calendar-root">
       {/* contenido base (sin blur). El blur se aplica en el overlay usando backdrop-filter */}
       <div>
-        <Navbar />
+        <Navbar searchbarOff menuOff prev/>
         <div className="calendar-wrap">
           <div className="calendar-container">
             <Card className="calendar-card">

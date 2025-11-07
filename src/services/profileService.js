@@ -82,3 +82,28 @@ export async function listCredentials() {
 export function createCredential(payload) {
   return httpJson("/api/credential", { method: "POST", body: payload });
 }
+
+export async function uploadCredentialPhoto(credentialId, file) {
+  if (!credentialId) throw new Error("credentialId is required");
+  if (!file) throw new Error("file is required");
+
+  const url = `${API}/api/credential/certificate/${credentialId}`;
+  const fd = new FormData();
+  fd.append("file", file);
+
+  const token = getJwt();
+  const headers = {};
+  if (token) headers["Authorization"] = `Bearer ${token}`;
+
+  const res = await fetch(url, {
+    method: "POST",
+    headers, 
+    body: fd,
+  });
+
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    throw new Error(`uploadCredentialPhoto failed for credentialId ${credentialId}: ${res.status} ${text}`);
+  }
+  return await res.text(); 
+}
