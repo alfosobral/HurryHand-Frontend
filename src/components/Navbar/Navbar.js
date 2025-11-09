@@ -116,6 +116,13 @@ export default function Navbar({
           >
             Mi calendario
           </a>
+          <a
+            href="/user-services-history"
+            className={styles.sideLink}
+            onClick={() => setMenuOpen(false)}
+          >
+            Historial de reservas
+          </a>
           <ChangeTheme />
         </aside>
       )}

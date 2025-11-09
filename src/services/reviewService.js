@@ -1,5 +1,4 @@
-const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:8080";
-
+const API_BASE = process.env.REACT_APP_API_URL;
 export async function createReview(reviewData) {
   const token = localStorage.getItem("token");
 
