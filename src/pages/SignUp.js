@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import Card from "../components/Card/Card";
 import InputField from "../components/InputField/InputField";
 import PasswordField from "../components/PasswordField/PasswordField";
@@ -81,12 +82,13 @@ export default function SignUp () {
         console.log("ENVIANDO A API:", payload)
         const res = await signUp(payload)
         console.log("OK", res);
+        toast.success("¡Cuenta creada exitosamente! Ya podés iniciar sesión.");
         navigate("/login")
 
         } catch (err) {
             console.error("STATUS", err.status);
             console.error("PAYLOAD", err.payload);
-            alert(err?.payload?.message || err?.message || "Error");
+            toast.error(err?.payload?.message || err?.message || "Error al crear la cuenta");
         } finally {
             setIsSubmitting(false);
         }

@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import ConfirmDialog from "../components/ConfirmDialog/ConfirmDialog";
 
 import Card from "../components/Card/Card";
 import SubmitButton from "../components/SubmitButton/SubmitButton";
@@ -42,6 +44,8 @@ export default function Profile() {
   const [credentials, setCredentials] = useState([]);
   const [loadingCredentials, setLoadingCredentials] = useState(true);
   const [credentialImageFile, setCredentialImageFile] = useState(null);
+
+  const [confirmConfig, setConfirmConfig] = useState(null);
 
   // Load user
   useEffect(() => {
@@ -145,7 +149,7 @@ export default function Profile() {
       window.dispatchEvent(new CustomEvent("profilePhotoUpdated", { detail: cacheBusted }));
       setPreview(null);
     } catch (err) {
-      alert("Error al subir imagen de perfil");
+      toast.error("Error al subir imagen de perfil");
       setPreview(null);
     } finally {
       try { URL.revokeObjectURL(objUrl); } catch {}
@@ -158,23 +162,29 @@ export default function Profile() {
       setField("provider", nextVal);
       return;
     }
-    const ok = window.confirm("¿Seguro que querés registrarte como proveedor?");
 
-    if (!ok) return;
-    try {
-      await becomeProvider();
-      setField("provider", true);
-      setUser((u) => ({ ...u, provider: true }));
-      setOriginal((o) => ({ ...o, provider: true }));
-      setLoadingCredentials(true);
-      const list = await listCredentials();
-      setCredentials(list);
-    } catch (e) {
-      alert("Error al registrarse como proveedor: " + (e.message || e));
-      setField("provider", false);
-    } finally {
-      setLoadingCredentials(false);
-    }
+    setConfirmConfig({
+      title: "Registrarse como proveedor",
+      message: "¿Seguro que querés registrarte como proveedor?",
+      onConfirm: async () => {
+        try {
+          await becomeProvider();
+          setField("provider", true);
+          setUser((u) => ({ ...u, provider: true }));
+          setOriginal((o) => ({ ...o, provider: true }));
+          setLoadingCredentials(true);
+          const list = await listCredentials();
+          setCredentials(list);
+          toast.success("¡Ahora sos proveedor!");
+        } catch (e) {
+          toast.error("Error al registrarse como proveedor: " + (e.message || e));
+          setField("provider", false);
+        } finally {
+          setLoadingCredentials(false);
+        }
+      },
+      onCancel: () => setConfirmConfig(null),
+    });
   };
 
   // Guardado incremental (como en tu versión)
@@ -196,9 +206,9 @@ export default function Profile() {
     if (email && email !== original.email) steps.push({ field: "email", run: () => patchEmail(email) });
 
     if (newPassword) {
-      if (!currentPassword) { alert("Ingresá tu contraseña actual"); return; }
-      if (currentPassword === newPassword) { alert("La nueva contraseña debe ser distinta"); return; }
-      if (newPassword.length < 6) { alert("La nueva contraseña debe tener al menos 6 caracteres"); return; }
+      if (!currentPassword) { toast.warning("Ingresá tu contraseña actual"); return; }
+      if (currentPassword === newPassword) { toast.warning("La nueva contraseña debe ser distinta"); return; }
+      if (newPassword.length < 6) { toast.warning("La nueva contraseña debe tener al menos 6 caracteres"); return; }
       steps.push({ field: "password", run: () => patchPassword(currentPassword, newPassword) });
     }
 
@@ -206,7 +216,7 @@ export default function Profile() {
       steps.push({ field: "phoneNumber", run: () => patchPhone(phoneNumber) });
     }
 
-    if (!steps.length) { alert("No hay cambios para guardar"); return; }
+    if (!steps.length) { toast.info("No hay cambios para guardar"); return; }
 
     setSaving(true);
     try {
@@ -223,8 +233,14 @@ export default function Profile() {
         applyOk("password",   () => { setForm(f => ({ ...f, currentPassword: "", newPassword: "" })); });
         applyOk("phoneNumber",() => { setUser(u => ({ ...u, phoneNumber })); setOriginal(o => ({ ...o, phoneNumber })); });
 
-      if (!fail.length) alert("Cambios guardados correctamente");
-      else alert(`${ok.length} de ${steps.length} cambios guardados.\nFallaron:\n${fail.map(f => `• ${f.field}: ${f.error}`).join("\n")}`);
+      if (!fail.length) {
+        toast.success("Cambios guardados correctamente");
+      } else {
+        toast.error(
+          `${ok.length} de ${steps.length} cambios guardados. Fallaron: ${fail.map(f => f.field).join(", ")}`,
+          { autoClose: 5000 }
+        );
+      }
     } finally {
       setSaving(false);
     }
@@ -242,9 +258,9 @@ export default function Profile() {
 
   const onAddCredential = async (e) => {
     e.preventDefault();
-    if (!user?.provider) { alert("Debés ser proveedor para agregar credenciales"); return; }
+    if (!user?.provider) { toast.warning("Debés ser proveedor para agregar credenciales"); return; }
     if (!form.credentialTitle || !form.credentialIssuer || !form.credentialDate) {
-      alert("Completá: Título, Emisor y Fecha de emisión"); return;
+      toast.warning("Completá: Título, Emisor y Fecha de emisión"); return;
     }
     setSavingCredential(true);
     try {
@@ -276,7 +292,7 @@ export default function Profile() {
           console.debug("uploadCredentialPhoto returned:", uploadedUrl);
         } catch (errUpload) {
           console.error("Error subiendo imagen de credencial:", errUpload);
-          alert("La credencial se creó pero falló la subida de la imagen.");
+          toast.warning("La credencial se creó pero falló la subida de la imagen.");
         }
       }
 
@@ -289,9 +305,9 @@ export default function Profile() {
       }));
       setCredentialImagePreview(null);
       setCredentialImageFile(null);
-      alert("Credencial agregada");
+      toast.success("Credencial agregada");
     } catch (err) {
-      alert("Error al agregar credencial: " + (err.message || err));
+      toast.error("Error al agregar credencial: " + (err.message || err));
     } finally { setSavingCredential(false); }
   };
 
@@ -509,6 +525,8 @@ export default function Profile() {
           </Card>
         )}
       </div>
+
+      {confirmConfig && <ConfirmDialog {...confirmConfig} />}
     </div>
   );
 }

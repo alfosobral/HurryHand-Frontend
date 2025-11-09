@@ -1,5 +1,5 @@
 import "./styles/ServicePostInfo.css";
-
+import { toast } from "react-toastify";
 
 import ImageCarousel from "../components/ ImageCarousel/ImageCarousel";
 import Navbar from "../components/Navbar/Navbar";
@@ -93,10 +93,14 @@ export default function ServicePostInfo() {
         if (!selectedDate.dateTime) {
             setWarnNoDate(true);
             setTimeout(() => setWarnNoDate(false), 2200);
+            toast.warning("Seleccioná una fecha disponible para reservar");
             return;
         }
 
-        if (!hasSession) return;
+        if (!hasSession) {
+            toast.warning("Debés iniciar sesión para reservar");
+            return;
+        }
         setShowConfirm(true);
     }
 
@@ -110,6 +114,7 @@ export default function ServicePostInfo() {
         if (!selectedDate.dateTime) {
             setWarnNoDateForDelete(true);
             setTimeout(() => setWarnNoDateForDelete(false), 2200);
+            toast.warning("Seleccioná una fecha para eliminar");
             return;
         }
         setShowDeleteConfirm(true);
@@ -120,11 +125,14 @@ export default function ServicePostInfo() {
         setDeleteError(null);
         try {
             await deleteAvailableDate(selectedDate.servicePostId, selectedDate.dateTime);
+            toast.success("Fecha disponible eliminada");
             setShowDeleteConfirm(false);
-            window.location.reload();
+            setTimeout(() => window.location.reload(), 800);
         } catch (err) {
             console.error("Error eliminando fecha:", err);
-            setDeleteError(err?.message || "Error al eliminar la fecha");
+            const errorMsg = err?.message || "Error al eliminar la fecha";
+            setDeleteError(errorMsg);
+            toast.error(errorMsg);
         } finally {
             setIsDeleting(false);
         }
@@ -150,14 +158,17 @@ export default function ServicePostInfo() {
             };
             await createAppointment(dto);
             setSubmitSuccess(true);
+            toast.success("¡Reserva confirmada exitosamente!");
 
             setTimeout(() => {
                 window.location.reload();
             }, 1200);
         } catch (err) {
             console.error("Error creando reserva:", err);
-            setSubmitError(err?.message || "Error al crear la reserva");
+            const errorMsg = err?.message || "Error al crear la reserva";
+            setSubmitError(errorMsg);
             setSubmitSuccess(false);
+            toast.error(errorMsg);
         } finally {
             setIsSubmitting(false);
         }
@@ -194,7 +205,10 @@ export default function ServicePostInfo() {
     }
 
     async function handleConfirmAdd() {
-        if (!newDate) return;
+        if (!newDate) {
+            toast.warning("Ingresá una fecha y hora");
+            return;
+        }
         setIsAdding(true);
         setAddError(null);
         try {
@@ -202,11 +216,14 @@ export default function ServicePostInfo() {
             const iso = new Date(newDate).toISOString();
             await addAvailableDate(id, iso);
             setAddSuccess(true);
+            toast.success("Fecha disponible agregada");
 
             setTimeout(() => window.location.reload(), 900);
         } catch (err) {
             console.error("Error agregando fecha:", err);
-            setAddError(err?.message || "Error al agregar la fecha");
+            const errorMsg = err?.message || "Error al agregar la fecha";
+            setAddError(errorMsg);
+            toast.error(errorMsg);
             setAddSuccess(false);
         } finally {
             setIsAdding(false);
@@ -231,11 +248,16 @@ export default function ServicePostInfo() {
         setDeletePostError(null);
         try {
             await deleteServicePost(id);
+            toast.success("Servicio eliminado exitosamente");
             setShowDeletePostConfirm(false);
-            window.location.href = "/"; // redirige al home o lista de servicios
+            setTimeout(() => {
+                window.location.href = "/"; // redirige al home o lista de servicios
+            }, 800);
         } catch (err) {
             console.error("Error eliminando service post:", err);
-            setDeletePostError(err?.message || "Error al eliminar el servicio");
+            const errorMsg = err?.message || "Error al eliminar el servicio";
+            setDeletePostError(errorMsg);
+            toast.error(errorMsg);
         } finally {
             setIsDeletingPost(false);
         }
