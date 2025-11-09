@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import Card from "../components/Card/Card";
 import InputField from "../components/InputField/InputField";
@@ -121,6 +122,7 @@ export default function ServicePost() {
         console.log(JSON.stringify(payload, null, 2));
 
       await createServicePostMultipart(payload, form.portfolio);
+      toast.success("¡Servicio publicado exitosamente!");
       navigate("/");
     } catch (err) {
       const data = err?.data || err?.payload;
@@ -128,8 +130,9 @@ export default function ServicePost() {
       if (Object.keys(mapped).length) {
         setServerErrors(mapped);
         setTouched((t) => ({ ...t, ...Object.fromEntries(Object.keys(mapped).map((k) => [k, true])) }));
+        toast.error("Hay errores en el formulario. Revisá los campos marcados.");
       } else {
-        alert(data?.message || err.message || "Error al publicar servicio");
+        toast.error(data?.message || err.message || "Error al publicar servicio");
       }
     } finally {
       setLoading(false);
