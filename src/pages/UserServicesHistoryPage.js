@@ -9,6 +9,8 @@ import { es } from "date-fns/locale";
 import SubmitButton from "../components/SubmitButton/SubmitButton";
 import ReviewButton from "../components/ReviewButton/ReviewButton";
 import TextAreaForReview from "../components/TextAreaForReview/TextAreaForReview";
+import Radio from "../components/Rating/Rating";
+import { createReview } from "../services/reviewService";
 
 
 
@@ -20,16 +22,49 @@ export default function UserServicesHistoryPage() {
     const [services, setServices] = useState([]); 
     const [activeService, setActiveService] = useState(null);
     const [comment, setComment] = useState("");
+    const [ratings, setRatings] = useState({});
 
     const handleReviewClick = (serviceId) => {
-    setActiveService(activeService === serviceId ? null : serviceId);
-    setComment("");
+        setActiveService(activeService === serviceId ? null : serviceId);
+        setComment("");
     };
 
-    const handleSubmit = () => {
-    console.log("Comentario enviado:", comment);
-    setComment("");
-    setActiveService(null);
+    const handleSubmit = async (serviceId) => {
+        const reviewData = {
+            appointmentID: serviceId,
+            title: "Reseña del usuario",
+            body: comment,
+            rating: ratings[serviceId] || 0,
+            updatedAt: new Date().toISOString(),
+            sentAt: new Date().toISOString(),
+        };
+
+        try {
+            await createReview(reviewData);
+            
+            const card = document.querySelector(`[data-service-id="${serviceId}"]`);
+            if (card) {
+            card.classList.add("fade-out");
+            }
+
+            setTimeout(() => {
+                setServices((prev) => prev.filter((s) => s.appointmentId !== serviceId));
+            }, 500); 
+
+            setComment("");
+            setActiveService(null);
+
+        } catch (error) {
+            alert("Error review");
+        }
+    };
+
+
+    const handleRatingChange = (serviceId, newRating) => {
+        setRatings((prev) => ({
+        ...prev,
+        [serviceId]: newRating,
+        }));
     };
 
 
@@ -63,7 +98,7 @@ export default function UserServicesHistoryPage() {
             } catch (err) {
                 console.error("Error para conseguir los appointments pasados:", err);
             } finally {
-                setLoading(false);
+                setTimeout(() => setLoading(false), 300);
             }
         })();
     }, [user]); //si cambia el user se vuvle a ejecutar ese useEffect, es solo caudno se carga componente o cuando cambia esta variable
@@ -78,30 +113,35 @@ export default function UserServicesHistoryPage() {
         <h1 className="user-services-history-title">Historial de Reservas</h1>
 
         <div className="user-services-list">
-          {services.length === 0 ? (
-            <p className="no-services-message">No hay servicios registrados.</p>
-          ) : (
+            {loading ? (
+            <p className="loading-message">Cargando servicios Consumidos</p>
+            ) : services.length === 0 ? (
+            <p className="no-services-message">No hay servicios pasados para hacer review</p>
+            ) : (
             services.map((service) => (
               <div key={service.id}>
-                <Card className="user-service-card">
-                  <div className="user-service-card-content">
-                    <div className="user-service-info">
-                      <p className="user-service-title">{service.servicePostTitle}</p>
-                      <p className="user-service-date">
-                        {format(
-                          new Date(service.appointmentDateTime),
-                          "dd 'de' MMMM 'de' yyyy 'a las' HH:mm",
-                          { locale: es }
-                        )}
-                      </p>
-                      <p className="user-service-duration">{service.durationMinutes} min</p>
-                    </div>
+                <div key={service.appointmentId} data-service-id={service.appointmentId}>
+                    <Card className="user-service-card">
+                    <div className="user-service-card-content">
+                        <div className="user-service-info">
+                        <p className="user-service-title">{service.servicePostTitle}</p>
+                        <p className="user-service-date">
+                            {format(
+                            new Date(service.appointmentDateTime),
+                            "dd 'de' MMMM 'de' yyyy 'a las' HH:mm",
+                            { locale: es }
+                            )}
+                        </p>
+                        <p className="user-service-duration">{service.durationMinutes} min</p>
+                        </div>
 
-                    <ReviewButton
-                      onClick={() => handleReviewClick(service.appointmentId)}
-                    />
-                  </div>
-                </Card>
+                        <ReviewButton
+                        onClick={() => handleReviewClick(service.appointmentId)}
+                        />
+                        
+                    </div>
+                    </Card>
+                </div>
 
                 {activeService === service.appointmentId && (
                   <div className="review-comment-box">
@@ -113,7 +153,11 @@ export default function UserServicesHistoryPage() {
                             onChange={(e) => setComment(e.target.value)}
                         />
 
-                        <SubmitButton className="submit-button-review"> Enviar </SubmitButton>
+                        <SubmitButton className="submit-button-review" onClick={()=>handleSubmit(service.appointmentId)}> Enviar </SubmitButton>
+                        <Radio
+                        value={ratings[service.appointmentId] || 0}
+                        onChange={(val) => handleRatingChange(service.appointmentId, val)}
+                        />
                     </Card>
                   </div>
                 )}

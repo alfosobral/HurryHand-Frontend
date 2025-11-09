@@ -10,7 +10,7 @@ const Radio = ({ value = null, onChange, size="30px" }) => {
         if (onChange) onChange(newValue);
     };
 
-    const isReadOnly = value !== null;
+    //const isReadOnly = value !== null;
 
     return (
         <StyledWrapper>
@@ -20,11 +20,10 @@ const Radio = ({ value = null, onChange, size="30px" }) => {
                         <input
                             type="radio"
                             id={`star${num}`}
-                            name="rate"
+                            name={`rate-${Math.random()}`}
                             value={num}
                             checked={rating === num}
                             onChange={handleChange}
-                            disabled={isReadOnly}
                         />
                         <label htmlFor={`star${num}`} title={`${num} estrellas`}>
                             <svg
