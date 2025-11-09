@@ -26,19 +26,19 @@ async function parseJsonResponse(res) {
 }
 
 export async function listServicePosts({
-  page = 1,
-  size = 12,
-  sortBy = "PRICE",      
-  direction = "DESC",
-  query = "",
-  signal, 
-} = {}) {
+                                         page = 1,
+                                         size = 12,
+                                         sortBy = "PRICE",
+                                         direction = "DESC",
+                                         query = "",
+                                         signal,
+                                       } = {}) {
   const qs = toSearchParams({
     page,
     size,
     sortBy,
     direction,
-    query, 
+    query,
   });
   const url = `${API}/api/service-post/all${qs ? `?${qs}` : ""}`;
   const res = await fetch(url, {
@@ -102,8 +102,8 @@ export async function createServicePostMultipart(payload, files = []) {
 
   const formData = new FormData();
   formData.append(
-    "servicePost",
-    new Blob([JSON.stringify(payload)], { type: "application/json" })
+      "servicePost",
+      new Blob([JSON.stringify(payload)], { type: "application/json" })
   );
   (files || []).forEach((file) => formData.append("photos", file));
 
@@ -113,7 +113,7 @@ export async function createServicePostMultipart(payload, files = []) {
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       // NO Content-Type: dejar que el navegador ponga el boundary
     },
-    credentials: "include", // si tu backend usa cookies/sesión
+    credentials: "include", // si tu backend usa cookies/sesiÃ³n
     body: formData,
   });
 
@@ -222,3 +222,22 @@ export async function addAvailableDate(servicePostId, date) {
   }
 }
 
+
+export async function getReviewsInfoByServicePostId(servicePostId) {
+
+  try {
+    const response = await fetch(`${API}/api/review/service-post/${servicePostId}`);
+
+    if (!response.ok) {
+      throw new Error(`Error HTTP: ${response.status}`);
+    }
+
+    const reviews = await response.json();
+    console.log('Reviews:', reviews);
+    return reviews;
+
+  } catch (error) {
+    console.error('Error al obtener reviews:', error);
+    return [];
+  }
+}

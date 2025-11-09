@@ -4,7 +4,12 @@ import { toast } from "react-toastify";
 import ImageCarousel from "../components/ ImageCarousel/ImageCarousel";
 import Navbar from "../components/Navbar/Navbar";
 import { getLoggedUser } from "../services/userService";
-import { deleteAvailableDate, getServicePostById, addAvailableDate } from "../services/servicePosts";
+import {
+    deleteAvailableDate,
+    getServicePostById,
+    addAvailableDate,
+    getReviewsInfoByServicePostId
+} from "../services/servicePosts";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { formatDate } from "date-fns";
@@ -33,18 +38,21 @@ export default function ServicePostInfo() {
     useEffect(() => {
         (async () => {
             try {
-                const [userData, serviceData] = await Promise.all([
+                const [userData, serviceData, reviewsData] = await Promise.all([
                     getLoggedUser(),
                     getServicePostById(id),
+                    getReviewsInfoByServicePostId(id),
                 ]);
 
                 setUser(userData || null);
                 setHasSession(!!userData && userData !== false);
                 setServicePost(serviceData || null);
+                setReviews(reviewsData || []);
             } catch (err) {
                 console.error("Error cargando datos:", err);
             } finally {
                 setLoading(false);
+                setReviewsLoading(false);
             }
         })();
     }, [id]);
@@ -209,12 +217,14 @@ export default function ServicePostInfo() {
             toast.warning("Ingresá una fecha y hora");
             return;
         }
+
         setIsAdding(true);
         setAddError(null);
+
         try {
-            // Convertir a ISO para que el backend lo reciba con @DateTimeFormat(ISO.DATE_TIME)
-            const iso = new Date(newDate).toISOString();
-            await addAvailableDate(id, iso);
+            // ✅ Usar el valor del input directamente (hora local)
+            await addAvailableDate(id, newDate);
+
             setAddSuccess(true);
             toast.success("Fecha disponible agregada");
 
@@ -264,6 +274,11 @@ export default function ServicePostInfo() {
     }
 
 
+    const [reviews, setReviews] = useState([]);
+    const [reviewsLoading, setReviewsLoading] = useState(true);
+
+
+
 
 
 
@@ -287,7 +302,7 @@ export default function ServicePostInfo() {
                         <ImageCarousel
                             images={servicePost.photosURLs}
                             className="image-carrousel"
-                            height="auto"
+                            height="360px"
                             width="550px"
                         />
                         <h2 className="service-post-info-overview1">Descripción</h2>
@@ -335,24 +350,24 @@ export default function ServicePostInfo() {
 
                             {servicePost.availableDates && servicePost.availableDates.length > 0 && (
                                 serviceProvider ? (
-                                        <SubmitButton
-                                            className="service-post-info-available-delete-dates-button"
-                                            disabled={!hasSession}
-                                            aria-disabled={!hasSession}
-                                            onClick={handleDeleteClick}
-                                        >
-                                            Borrar Fecha
-                                        </SubmitButton>
-                                    ) : (
-                                        <SubmitButton
-                                            onClick={handleReserveClick}
-                                            className="service-post-info-available-dates-button"
-                                            disabled={!hasSession}
-                                            aria-disabled={!hasSession}
-                                        >
-                                            {hasSession ? "Reservar Servicio" : "Inicia Sesión"}
-                                        </SubmitButton>
-                                    )
+                                    <SubmitButton
+                                        className="service-post-info-available-delete-dates-button"
+                                        disabled={!hasSession}
+                                        aria-disabled={!hasSession}
+                                        onClick={handleDeleteClick}
+                                    >
+                                        Borrar Fecha
+                                    </SubmitButton>
+                                ) : (
+                                    <SubmitButton
+                                        onClick={handleReserveClick}
+                                        className="service-post-info-available-dates-button"
+                                        disabled={!hasSession}
+                                        aria-disabled={!hasSession}
+                                    >
+                                        {hasSession ? "Reservar Servicio" : "Inicia Sesión"}
+                                    </SubmitButton>
+                                )
                             )}
                             {serviceProvider && (
                                 <>
@@ -382,8 +397,41 @@ export default function ServicePostInfo() {
                     </div>
                 </div>
 
-                <div className="service-post-info-reviews"></div>
+                <div className="service-post-info-reviews">
+                    {reviewsLoading ? (
+                        <p>Cargando reseñas...</p>
+                    ) : reviews.length > 0 ? (
+                        <div className="reviews-section">
+                            <h3>Reseñas del servicio</h3>
+                            {reviews.map((r) => (
+                                <div key={r.id} className="review-card">
+                                    <div className="review-header">
+                                        <img
+                                            src={r.userProfilePhotoURL || "/images/default-avatar.png"}
+                                            alt={r.userName || "Usuario"}
+                                            className="review-avatar"
+                                            onError={(e) => {
+                                                e.target.onerror = null;
+                                                e.target.src = "/images/default-avatar.png"; // fallback si la URL falla
+                                            }}
+                                        />
+                                        <strong>{r.userName}</strong>
+                                        <span>⭐ {r.rating}</span>
+                                    </div>
+                                    <p>{r.body}</p>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <p>No hay reseñas todavía.</p>
+                    )}
+                </div>
             </div>
+
+
+
+
+
 
             {/* Modal confirmar reserva */}
             {showConfirm && (
