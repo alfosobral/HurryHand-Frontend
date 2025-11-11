@@ -1,0 +1,23 @@
+# Ignorar dependencias locales
+node_modules
+build
+
+# Ignorar configuración local y logs
+npm-debug.log
+yarn-error.log
+.env.local
+
+# Ignorar archivos de control de versiones
+.git
+.gitignore
+
+# Ignorar cosas del sistema
+.DS_Store
+Thumbs.db
+
+# Ignorar archivos de Docker que no deben copiarse
+Dockerfile
+docker-compose.yml
+
+# Ignorar archivo README.md
+README.md

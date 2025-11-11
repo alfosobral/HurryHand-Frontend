@@ -19,6 +19,7 @@ import SubmitButton from "../components/SubmitButton/SubmitButton";
 import { createAppointment } from "../services/appointmentService";
 import DateField from "../components/DateField/DateField";
 import { deleteServicePost } from "../services/servicePosts";
+import PrfilePhoto from "../assets/Profile.png";
 
 export default function ServicePostInfo() {
     const { id } = useParams();
@@ -407,12 +408,12 @@ export default function ServicePostInfo() {
                                 <div key={r.id} className="review-card">
                                     <div className="review-header">
                                         <img
-                                            src={r.userProfilePhotoURL || "/images/default-avatar.png"}
+                                            src={r.userProfilePhotoURL || PrfilePhoto}
                                             alt={r.userName || "Usuario"}
                                             className="review-avatar"
                                             onError={(e) => {
                                                 e.target.onerror = null;
-                                                e.target.src = "/images/default-avatar.png"; // fallback si la URL falla
+                                                e.target.src = PrfilePhoto; // fallback si la URL falla
                                             }}
                                         />
                                         <strong>{r.userName}</strong>
